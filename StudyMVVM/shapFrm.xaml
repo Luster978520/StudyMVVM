@@ -1,0 +1,1303 @@
+﻿<Window x:Class="StudyMVVM.shapFrm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyMVVM"
+        mc:Ignorable="d"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behavior="clr-namespace:StudyMVVM.Behaviors1"
+        Title="shapFrm" Height="750" Width="1200">
+    <TabControl SelectedIndex="10">
+        <TabItem Header="图像形状">
+
+
+            <Grid Width="450" Height="400" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock>The first row of a grid</TextBlock>
+                <!-- 缩放控制 -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8">
+                    <TextBlock Text="缩放：" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Slider x:Name="scaleSlider" Minimum="0.2" Maximum="3" Value="1" Width="200" TickFrequency="0.1" IsSnapToTickEnabled="False"/>
+                    <TextBlock Text="{Binding Value, ElementName=scaleSlider, StringFormat=F2}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Viewbox Grid.Row="0">
+                        <!-- Canvas 使用 RenderTransform 做缩放，RenderTransformOrigin 指定缩放中心为元素中心 -->
+                        <Canvas Width="300"  Height="400"   RenderTransformOrigin="0.5,0.5">
+                            <Canvas.RenderTransform>
+                                <ScaleTransform ScaleX="{Binding Value, ElementName=scaleSlider}" ScaleY="{Binding Value, ElementName=scaleSlider}" />
+                            </Canvas.RenderTransform>
+
+                            <Ellipse Fill="Yellow" Stroke="Blue" StrokeThickness="2"
+                  Canvas.Left="10" Canvas.Top="50"
+                  Width="100" Height="100"/>
+                            <Rectangle Fill="Yellow" Stroke="Blue"
+                    Canvas.Left="130" Canvas.Top="40"
+                    Width="120" Height="80"/>
+                        </Canvas>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" Stretch="Fill">
+                        <!-- 为 Canvas 指定大小，或确保子元素有明确的 Width/Height -->
+                        <Canvas Width="400" Height="300" HorizontalAlignment="Left">
+                            <Ellipse Fill="Yellow" Stroke="Blue" StrokeThickness="2"
+                         Canvas.Left="10" Canvas.Top="50"
+                         Width="100" Height="100"/>
+                            <Rectangle Fill="Yellow" Stroke="Blue"
+                           Canvas.Left="130" Canvas.Top="40"
+                           Width="120" Height="80"/>
+                        </Canvas>
+                    </Viewbox>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="画刷">
+            <StackPanel>
+                <Border Height="40">
+                    <Border.Background>
+                        <SolidColorBrush Color="Green" Opacity="0.2"/>
+                    </Border.Background>
+                </Border>
+                <TextBlock Text="我们生活的每一天都是一场时空穿越！">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="Red"></SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <Rectangle Width="100" Height="60"  StrokeThickness="5">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="DarkBlue"></SolidColorBrush>
+                    </Rectangle.Fill>
+                    <Rectangle.Stroke>
+                        <SolidColorBrush Color="Green"></SolidColorBrush>
+                    </Rectangle.Stroke>
+                </Rectangle>
+                <Ellipse x:Name="ellipse" Width="100" Height="100">
+
+                </Ellipse>
+                <Label FontSize="20" HorizontalAlignment="Center">渐变画刷</Label>
+                <Rectangle Width="300" Height="100">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0 0" EndPoint="1 1">
+                            <GradientStop Color="red" Offset="0"></GradientStop>
+                            <GradientStop Color="blue" Offset="0.5"></GradientStop>
+                            <GradientStop Color="Green" Offset="1"></GradientStop>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="爱心">
+            <Canvas>
+                <Polyline   Points="250,150 220,120 180,120 150,150 180,190 250,230 320,190 350,150 320,120 280,120 250,150" StrokeThickness="3" Cursor="Hand" Canvas.Left="-66" Canvas.Top="10" >
+                    <Polyline.Fill>
+                        <LinearGradientBrush 
+                                         StartPoint="0 0" EndPoint="1 1">
+                            <GradientStop Color="Green" Offset="0"/>
+                            <GradientStop Color="blue" Offset="0.313"/>
+                            <GradientStop Color="Red" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Polyline.Fill>
+                    <i:Interaction.Behaviors>
+                        <behavior:CustBehavior></behavior:CustBehavior>
+                    </i:Interaction.Behaviors>
+                </Polyline>
+
+                <TextBlock Text="SuperFish520" FontSize="20">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush 
+                     StartPoint="0 0" EndPoint="1 1">
+                            <GradientStop Color="Green" Offset="0"/>
+                            <GradientStop Color="blue" Offset="0.4"/>
+                            <GradientStop Color="Red" Offset="1"/>
+                        </LinearGradientBrush>
+
+                    </TextBlock.Foreground>
+                     <i:Interaction.Behaviors>
+                      <behavior:CustBehavior></behavior:CustBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBlock>
+
+                <Ellipse Canvas.Left="100" Canvas.Top="20" Width="100" Height="80">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush RadiusX="0.5" RadiusY="0.5">
+                            <GradientStop Color="Yellow" Offset="0"/>
+                            <GradientStop Color="Pink" Offset="0.4"/>
+                            <GradientStop Color="Red" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                    <i:Interaction.Behaviors>
+                        <behavior:CustBehavior></behavior:CustBehavior>
+                    </i:Interaction.Behaviors>
+                </Ellipse>
+                <Rectangle Width="100" Height="100">
+                    <Rectangle.Fill >
+                        <ImageBrush ImageSource="/image/风景1.jpg"
+                                    Viewbox="0.1 0.5 0.3 0.7">
+                        </ImageBrush>
+                    </Rectangle.Fill>
+                    <i:Interaction.Behaviors>
+                        <behavior:CustBehavior></behavior:CustBehavior>
+                    </i:Interaction.Behaviors>
+                </Rectangle>
+
+                <Rectangle Width="230" Height="120" Canvas.Left="300" Canvas.Top="100">
+                    <Rectangle.Fill >
+                        <ImageBrush ImageSource="/image/风景1.jpg"
+                                    ViewportUnits="RelativeToBoundingBox"
+                                    TileMode="FlipXY"
+                                 Viewport="0 0 0.5 0.5">
+                        </ImageBrush>
+                    </Rectangle.Fill>
+                    <i:Interaction.Behaviors>
+                        <behavior:CustBehavior></behavior:CustBehavior>
+                    </i:Interaction.Behaviors>
+                </Rectangle>
+
+
+            </Canvas>
+        </TabItem>
+        <TabItem Header="VisualBrush">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="79.8"/>
+                    <ColumnDefinition Width="170.2"/>
+                    <ColumnDefinition Width="118.488"/>
+                    <ColumnDefinition Width="19.063"/>
+                    <ColumnDefinition Width="62.449"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.ColumnSpan="2">
+                    <Image x:Name="visualBrushPicture" Width="100" Height="100" Source="/image/风景1.jpg"></Image>
+                    <Button x:Name="visualBrushbutton" Width="80" Height="30" Background="AliceBlue" Content="按钮"></Button>
+
+                    <Rectangle Width="200" Height=" 200">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{Binding ElementName=visualBrushPicture}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle Width="80" Height=" 60">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{Binding ElementName=visualBrushbutton}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Grid.ColumnSpan="3"  >
+                    <TextBox TextWrapping="Wrap" FontSize="20" FontFamily="Arial Rounded MT Bold" 
+                             Text="visualBrush 画刷只复制控件的样式，不复制控件的逻辑,复制Opacity属性。" 
+                             HorizontalAlignment="Left" Width="199"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Column="5"  >
+                    <Image x:Name="bitmapCacheBrush" Source="/image/风景1.jpg">
+                    </Image>
+                    <TextBlock FontFamily="Arial" FontSize="20" TextWrapping="Wrap"
+                               Text="BitmapCacheBrush的图片显示更加清晰，渲染规模RenderAtScale；位图不会复制原图片的Opacity属性;复制东西少"/>
+                    <Rectangle Width="200" Height="200">
+                        <Rectangle.Fill>
+                            <BitmapCacheBrush Target="{Binding ElementName=bitmapCacheBrush}">
+                                <BitmapCacheBrush.BitmapCache>
+                                    <BitmapCache RenderAtScale="10"></BitmapCache>
+                                </BitmapCacheBrush.BitmapCache>
+                            </BitmapCacheBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="变换">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+
+                    <TextBox FontFamily="Algerian" FontSize="20" Text="变换" ></TextBox>
+                    <TextBox FontFamily="Algerian" FontSize="20" Text="旋转"></TextBox>
+                    <TextBox FontFamily="Algerian" FontSize="20" Text="缩放"></TextBox>
+                    <TextBox FontFamily="Algerian" FontSize="20" Text="三个主要属性"></TextBox>
+                    <TextBox FontFamily="宋体" FontSize="20" 
+                             Text="RenderTransformOrigin CenterY CenterX"></TextBox>
+                    <TextBox FontFamily="宋体" FontSize="20" Text="缩放 ScanleTransform(倒影) ScaleX ScaleY"></TextBox>
+                    <TextBox TextWrapping="Wrap" FontFamily="宋体" FontSize="20" Text="CenterX CenterY 旋转中心 绝对坐标值"></TextBox>
+                    <TextBox TextWrapping="Wrap" FontFamily="宋体" FontSize="20" Text=" 相对坐标值：写到元素上 渲染变换的起始点 RenderTransformOrigin"></TextBox>
+                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <Slider x:Name="scaleSlider1" Width="150" Height="20" Minimum="0" Maximum="4" Value="1"></Slider>
+                    </StackPanel>
+                    <Canvas Grid.Row="1">
+                        <Rectangle Fill="Green" Width="80" Height="10" Canvas.Left="100" Canvas.Top="100"></Rectangle>
+                        <Rectangle Fill="Green" Width="80" Height="10" Canvas.Left="100" Canvas.Top="100">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="45"></RotateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="Green" Width="80" Height="10" Canvas.Left="100" Canvas.Top="100">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="90" ></RotateTransform>
+
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="Green" Width="80" Height="10" Canvas.Left="100" Canvas.Top="100">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="135"></RotateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+
+                        <Button Content="按钮" Width="80" Height="40" Background="AntiqueWhite" Canvas.Left="100" Canvas.Top="200"
+                            RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <RotateTransform Angle="20"></RotateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+                        <Button Content="按钮" Width="80" Height="40" Background="AntiqueWhite" Canvas.Left="100" Canvas.Top="300"
+         RenderTransformOrigin="0.5,0.5">
+                            <Button.RenderTransform>
+                                <RotateTransform Angle="75"></RotateTransform>
+                            </Button.RenderTransform>
+                        </Button>
+
+                        <Rectangle Fill="Green" Width="80" Height="10" Canvas.Left="200" Canvas.Top="100" RenderTransformOrigin="0.5 0.5">
+                            <Rectangle.RenderTransform>
+                                <ScaleTransform ScaleX="{Binding ElementName=scaleSlider1, Path=Value}"></ScaleTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+
+                        <Image x:Name="ImageReflect" Width="200" Canvas.Left="300" Canvas.Top="100" Source="/image/风景1.jpg"></Image>
+                        <Rectangle Width="{Binding ElementName=ImageReflect, Path=ActualWidth}" Height="{Binding ElementName=ImageReflect, Path=ActualHeight}" Canvas.Left="300" Canvas.Top="230" RenderTransformOrigin="0.5 0.5" >
+                            <Rectangle.Fill>
+                                <VisualBrush Visual="{Binding ElementName=ImageReflect}"/>
+                            </Rectangle.Fill>
+                            <Rectangle.RenderTransform>
+                                <ScaleTransform ScaleY="-1"></ScaleTransform>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.OpacityMask>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="Transparent" Offset="0"></GradientStop>
+                                    <GradientStop Color="Green" Offset="1"></GradientStop>
+                                </LinearGradientBrush>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+
+                    </Canvas>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="路径和几何图形">
+            <Grid ShowGridLines="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="17*"/>
+                    <ColumnDefinition Width="125*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <Line Grid.Row="0" Grid.Column="0" X1="0" Y1="0" X2="100" Y2="100" Stroke="Red" Grid.ColumnSpan="2"></Line>
+                <Path Grid.Row="1" Grid.Column="0" Stroke="Green" Margin="0,10,0,10" Grid.ColumnSpan="2">
+                    <Path.Data>
+                        <LineGeometry StartPoint="0 0"  EndPoint="200 100"/>
+                    </Path.Data>
+                </Path>
+                <Rectangle Grid.Row="2" Grid.Column="1" Height="100" Width="200" Fill="Yellow" Margin="278,0,397,50" Grid.RowSpan="2"></Rectangle>
+                <Path Fill="Yellow" Stroke="Blue" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Path.Data>
+                        <RectangleGeometry Rect="0 0 100 50"></RectangleGeometry>
+                    </Path.Data>
+                </Path>
+
+                <Path Grid.Row="4" Grid.Column="1" Fill="BlueViolet" Margin="181,50,100,0">
+                    <Path.Data>
+                        <EllipseGeometry RadiusX="100" RadiusY="80"/>
+                    </Path.Data>
+                </Path>
+
+                <Path Fill="Coral" Width="100" Height="100" Grid.Row="5" Grid.Column="1" Margin="328,0,447,0">
+                    <Path.Data>
+                        <GeometryGroup FillRule="EvenOdd">
+                            <RectangleGeometry Rect="0 0 100 100"></RectangleGeometry>
+                            <EllipseGeometry RadiusX="50" RadiusY="30" Center="50 50"></EllipseGeometry>
+                        </GeometryGroup>
+                    </Path.Data>
+                </Path>
+                <TextBlock  Grid.Row="0" Grid.Column="2" Text="直线line"></TextBlock>
+                <TextBlock Grid.Column="2" Text="直线Path path.data LineGeometry" Margin="0,100,0,100" Grid.RowSpan="3"/>
+                <TextBlock  Grid.Row="2" Grid.Column="2" Text="矩形 rectangle" Margin="0,0,0,50" Grid.RowSpan="2" ></TextBlock>
+                <TextBlock  Grid.Row="3" Grid.Column="2" Text="矩形 RectagnleGeometry"></TextBlock>
+                <TextBlock  Grid.Row="3" Grid.Column="2" Text="椭圆 EllipseGeometry" Margin="0,50,0,0" Grid.RowSpan="2"></TextBlock>
+                <TextBlock  TextWrapping="Wrap" Grid.Row="4" Grid.Column="2" Text="GeometryGroup 属性FillRule EventOld非  NonZero并 奇偶填充 奇数填充，偶数不填充" Margin="0,130,0,0" Grid.RowSpan="2"></TextBlock>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="融合图形">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="144*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="199*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.ColumnSpan="2">
+                    <ComboBox x:Name="cbbCombined" Width="100" Height="30" SelectedIndex="1" SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBoxItem>Union</ComboBoxItem>
+                        <ComboBoxItem>Intersect</ComboBoxItem>
+                        <ComboBoxItem>Exclude</ComboBoxItem>
+                        <ComboBoxItem>Xor</ComboBoxItem>
+                    </ComboBox>
+                    <Path x:Name="combinedGeometryPathTest" Fill="Yellow" Stroke="Blue" StrokeThickness="2" Margin="5" Height="100" Width="200">
+                        <Path.Data>
+                            <!-- 加上 GeometryCombineMode="Union" -->
+                            <CombinedGeometry  GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 100 100"></RectangleGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <EllipseGeometry Center="85 50" RadiusX="65" RadiusY="35"></EllipseGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="Yellow" Stroke="Blue" StrokeThickness="2" Margin="5" Height="100" Width="200">
+                        <Path.Data>
+                            <!-- 加上 GeometryCombineMode="Union" -->
+                            <CombinedGeometry GeometryCombineMode="Intersect">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 100 100"></RectangleGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <EllipseGeometry Center="85 50" RadiusX="65" RadiusY="35"></EllipseGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+
+                    <Path Fill="Yellow" Stroke="Blue" StrokeThickness="2" Margin="5" Height="100" Width="200">
+                        <Path.Data>
+                            <!-- 加上 GeometryCombineMode="Union" -->
+                            <CombinedGeometry GeometryCombineMode="Exclude">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 100 100"></RectangleGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <EllipseGeometry Center="85 50" RadiusX="65" RadiusY="35"></EllipseGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+
+                    <Path Fill="Yellow" Stroke="Blue" StrokeThickness="2" Margin="5" Height="100" Width="200">
+                        <Path.Data>
+                            <!-- 加上 GeometryCombineMode="Union" -->
+                            <CombinedGeometry GeometryCombineMode="Xor">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry Rect="0 0 100 100"></RectangleGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <EllipseGeometry Center="85 50" RadiusX="65" RadiusY="35"></EllipseGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+
+                    <Path Fill="red" Stroke="Blue">
+                        <Path.Data>
+                            <!--第一个图形-->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <CombinedGeometry GeometryCombineMode="Exclude">
+                                        <!--第一个图形中的第一个图形-->
+                                        <CombinedGeometry.Geometry1>
+                                            <EllipseGeometry Center="50,50" RadiusX="50" RadiusY="50"></EllipseGeometry>
+                                        </CombinedGeometry.Geometry1>
+                                        <!--第一个图形中的第二个图形-->
+                                        <CombinedGeometry.Geometry2>
+                                            <EllipseGeometry Center="50,50" RadiusX="40" RadiusY="40"></EllipseGeometry>
+                                        </CombinedGeometry.Geometry2>
+                                    </CombinedGeometry>
+                                </CombinedGeometry.Geometry1>
+
+                                <!--第二个图形中-->
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry Rect="44,5 10,90">
+                                        <RectangleGeometry.Transform>
+                                            <RotateTransform Angle="45" CenterX="50" CenterY="50"></RotateTransform>
+                                        </RectangleGeometry.Transform>
+                                    </RectangleGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <Path Fill="White" Stroke="Black" StrokeThickness="2" Margin="20" Width="300" Height="300">
+                        <Path.Data>
+                            <!-- 外层合并：头部 + 两只耳朵 Union合并 -->
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <!-- Geometry1：兔子头部，Exclude挖空两只眼睛 -->
+                                <CombinedGeometry.Geometry1>
+                                    <CombinedGeometry GeometryCombineMode="Exclude">
+                                        <CombinedGeometry.Geometry1>
+                                            <!-- 大圆：脑袋 -->
+                                            <EllipseGeometry Center="50,60" RadiusX="40" RadiusY="35"/>
+                                        </CombinedGeometry.Geometry1>
+                                        <CombinedGeometry.Geometry2>
+                                            <!-- 两个眼睛（GeometryGroup放多个挖空图形，Exclude一次性挖掉） -->
+                                            <GeometryGroup>
+                                                <EllipseGeometry Center="35,50" RadiusX="5" RadiusY="7"/>
+                                                <EllipseGeometry Center="65,50" RadiusX="5" RadiusY="7"/>
+                                            </GeometryGroup>
+                                        </CombinedGeometry.Geometry2>
+                                    </CombinedGeometry>
+                                </CombinedGeometry.Geometry1>
+                                <!-- Geometry2：两只长耳朵，Union合并到脑袋上 -->
+                                <CombinedGeometry.Geometry2>
+                                    <CombinedGeometry GeometryCombineMode="Union">
+                                        <CombinedGeometry.Geometry1>
+                                            <!-- 左耳 -->
+                                            <EllipseGeometry Center="25,15" RadiusX="12" RadiusY="28"/>
+                                        </CombinedGeometry.Geometry1>
+                                        <CombinedGeometry.Geometry2>
+                                            <!-- 右耳 -->
+                                            <EllipseGeometry Center="75,15" RadiusX="12" RadiusY="28"/>
+                                        </CombinedGeometry.Geometry2>
+                                    </CombinedGeometry>
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </Path.Data>
+                    </Path>
+
+                </StackPanel>
+            </Grid>
+
+
+        </TabItem>
+        <TabItem Header="Chatgpt">
+            <Grid Background="#101020">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="481*"/>
+                    <ColumnDefinition Width="713*"/>
+                </Grid.ColumnDefinitions>
+                <Viewbox Stretch="Uniform" Grid.ColumnSpan="2">
+                    <Canvas Width="300" Height="340">
+
+                        <!-- 背部装饰：机械光环 -->
+                        <Ellipse Width="220" Height="220"
+                     Canvas.Left="40" Canvas.Top="35"
+                     Stroke="#00FFFF"
+                     StrokeThickness="2"
+                     Opacity="0.8"/>
+
+                        <Ellipse Width="190" Height="190"
+                     Canvas.Left="55" Canvas.Top="50"
+                     Stroke="#FF00FF"
+                     StrokeThickness="1.5"
+                     StrokeDashArray="4 4"/>
+
+                        <!-- 头骨主体 -->
+                        <Path Fill="#DCE7F0"
+                  Stroke="#00FFFF"
+                  StrokeThickness="2"
+                  Data="M 70,105
+                        C 55,65 85,35 150,35
+                        C 215,35 245,65 230,105
+                        L 220,170
+                        L 205,205
+                        L 195,250
+                        L 175,265
+                        L 125,265
+                        L 105,250
+                        L 95,205
+                        L 80,170 Z"/>
+
+                        <!-- 左眼窝 -->
+                        <Path Fill="#101020"
+                  Stroke="#FF00FF"
+                  StrokeThickness="2"
+                  Data="M 80,115
+                        L 120,100
+                        L 115,145
+                        L 90,155 Z"/>
+
+                        <!-- 右眼窝 -->
+                        <Path Fill="#101020"
+                  Stroke="#00FFFF"
+                  StrokeThickness="2"
+                  Data="M 180,100
+                        L 220,115
+                        L 210,155
+                        L 185,145 Z"/>
+
+                        <!-- 左眼发光核心 -->
+                        <Ellipse Width="15" Height="15"
+                     Canvas.Left="94" Canvas.Top="120"
+                     Fill="#FF00FF"/>
+
+                        <!-- 右眼发光核心 -->
+                        <Ellipse Width="15" Height="15"
+                     Canvas.Left="191" Canvas.Top="120"
+                     Fill="#00FFFF"/>
+
+                        <!-- 鼻骨 -->
+                        <Path Fill="#101020"
+                  Stroke="#FF00FF"
+                  StrokeThickness="1.5"
+                  Data="M 145,155
+                        L 155,155
+                        L 165,180
+                        L 150,190
+                        L 135,180 Z"/>
+
+                        <!-- 颧骨机械装饰 -->
+                        <Path Stroke="#00FFFF"
+                  StrokeThickness="3"
+                  Fill="Transparent"
+                  Data="M 70,165 L 105,180 L 125,205
+                        M 230,165 L 195,180 L 175,205"/>
+
+                        <!-- 嘴部黑色区域 -->
+                        <Path Fill="#101020"
+                  Stroke="#00FFFF"
+                  StrokeThickness="2"
+                  Data="M 110,205
+                        L 190,205
+                        L 185,245
+                        L 165,255
+                        L 135,255
+                        L 115,245 Z"/>
+
+                        <!-- 机械牙齿 -->
+                        <Path Fill="#DCE7F0"
+                  Stroke="#00FFFF"
+                  StrokeThickness="1"
+                  Data="M 120,207 L 135,207 L 135,230 L 120,230 Z
+                        M 142,207 L 157,207 L 157,230 L 142,230 Z
+                        M 164,207 L 179,207 L 179,230 L 164,230 Z"/>
+
+                        <!-- 头部闪电装饰 -->
+                        <Path Fill="#FF00FF"
+                  Stroke="#FF00FF"
+                  StrokeThickness="1"
+                  Data="M 145,55 L 130,80 L 145,75
+                        L 138,95 L 160,67 L 145,73 Z"/>
+
+                        <!-- 左侧机械尖刺 -->
+                        <Path Fill="#00FFFF"
+                  Data="M 65,140 L 35,125 L 55,155 Z"/>
+
+                        <!-- 右侧机械尖刺 -->
+                        <Path Fill="#FF00FF"
+                  Data="M 235,140 L 265,125 L 245,155 Z"/>
+
+                        <!-- 底部文字 -->
+                        <TextBlock Canvas.Left="70"
+                       Canvas.Top="290"
+                       Width="160"
+                       Text="CYBER SKULL"
+                       Foreground="#00FFFF"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       TextAlignment="Center"/>
+
+                        <TextBlock Canvas.Left="75"
+                       Canvas.Top="315"
+                       Width="150"
+                       Text="SYSTEM ONLINE"
+                       Foreground="#FF00FF"
+                       FontSize="10"
+                       TextAlignment="Center"/>
+
+                    </Canvas>
+                </Viewbox>
+            </Grid>
+
+        </TabItem>
+        <TabItem Header="豆包">
+            <Grid Background="#111111">
+                <Path x:Name="wolfPath" Stroke="#00E5FF" StrokeThickness="1.5" Margin="20"
+          StrokeStartLineCap="Round" StrokeLineJoin="Round">
+                    <Path.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#0B1F3A" Offset="0"/>
+                            <GradientStop Color="#1557A0" Offset="0.5"/>
+                            <GradientStop Color="#00E5FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Path.Fill>
+                    <Path.Data>
+                        <!-- 外层：轮廓 和 镂空区域 做Exclude -->
+                        <CombinedGeometry GeometryCombineMode="Exclude">
+                            <CombinedGeometry.Geometry1>
+                                <!--【1】狼头整体外轮廓 -->
+                                <CombinedGeometry GeometryCombineMode="Union">
+                                    <CombinedGeometry.Geometry1>
+                                        <CombinedGeometry GeometryCombineMode="Union">
+                                            <CombinedGeometry.Geometry1>
+                                                <EllipseGeometry Center="100,90" RadiusX="72" RadiusY="58"/>
+                                            </CombinedGeometry.Geometry1>
+                                            <CombinedGeometry.Geometry2>
+                                                <PathGeometry Figures="M 40,55 L 18,12 L 62,36 Z"/>
+                                            </CombinedGeometry.Geometry2>
+                                        </CombinedGeometry>
+                                    </CombinedGeometry.Geometry1>
+                                    <CombinedGeometry.Geometry2>
+                                        <CombinedGeometry GeometryCombineMode="Union">
+                                            <CombinedGeometry.Geometry1>
+                                                <PathGeometry Figures="M 160,55 L 182,12 L 138,36 Z"/>
+                                            </CombinedGeometry.Geometry1>
+                                            <CombinedGeometry.Geometry2>
+                                                <CombinedGeometry GeometryCombineMode="Union">
+                                                    <CombinedGeometry.Geometry1>
+                                                        <PathGeometry Figures="M 42,118 L 158,118 L 142,148 L 58,148 Z"/>
+                                                    </CombinedGeometry.Geometry1>
+                                                    <CombinedGeometry.Geometry2>
+                                                        <PathGeometry Figures="M 60,148 L 140,148 L 100,190 Z"/>
+                                                    </CombinedGeometry.Geometry2>
+                                                </CombinedGeometry>
+                                            </CombinedGeometry.Geometry2>
+                                        </CombinedGeometry>
+                                    </CombinedGeometry.Geometry2>
+                                </CombinedGeometry>
+                            </CombinedGeometry.Geometry1>
+                            <CombinedGeometry.Geometry2>
+                                <!--【2】所有镂空图形，用GeometryGroup打包 -->
+                                <GeometryGroup>
+                                    <!--左眼-->
+                                    <PathGeometry Figures="M 70,78 L 88,72 L 92,92 L 74,98 Z"/>
+                                    <!--右眼-->
+                                    <PathGeometry Figures="M 130,78 L 112,72 L 108,92 L 126,98 Z"/>
+                                    <!--嘴V形-->
+                                    <PathGeometry Figures="M 92,112 L 108,112 L 100,130 Z"/>
+                                </GeometryGroup>
+                            </CombinedGeometry.Geometry2>
+                        </CombinedGeometry>
+                    </Path.Data>
+                </Path>
+                <Ellipse Stroke="#00E5FF" StrokeThickness="0.8" Opacity="0.3" Width="260" Height="260" Margin="20"/>
+                <Ellipse Stroke="#00E5FF" StrokeThickness="0.4" Opacity="0.15" Width="300" Height="300" Margin="20"/>
+            </Grid>
+
+        </TabItem>
+        <TabItem Header="Claude">
+            <Grid Background="#0A0A18">
+
+                <!-- 资源：发光效果 + 按钮样式 -->
+                <Grid.Resources>
+                    <DropShadowEffect x:Key="CyanGlow" Color="#00FFFF" BlurRadius="18" ShadowDepth="0"/>
+                    <DropShadowEffect x:Key="PinkGlow" Color="#FF00FF" BlurRadius="18" ShadowDepth="0"/>
+
+                    <Style x:Key="NeonBtn" TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#00FFFF"/>
+                        <Setter Property="BorderThickness" Value="1.5"/>
+                        <Setter Property="Background" Value="#1100FFFF"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5500FFFF"/>
+                                <Setter Property="Effect" Value="{StaticResource CyanGlow}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <Viewbox Stretch="Uniform">
+                    <Canvas Width="800" Height="480" ClipToBounds="True">
+
+                        <!-- 背景网格 -->
+                        <Rectangle Width="800" Height="480" Opacity="0.18">
+                            <Rectangle.Fill>
+                                <DrawingBrush TileMode="Tile" Viewport="0,0,40,40" ViewportUnits="Absolute">
+                                    <DrawingBrush.Drawing>
+                                        <GeometryDrawing Geometry="M 0,0 L 40,0 M 0,0 L 0,40">
+                                            <GeometryDrawing.Pen>
+                                                <Pen Brush="#00FFFF" Thickness="0.6"/>
+                                            </GeometryDrawing.Pen>
+                                        </GeometryDrawing>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+
+                        <!-- 中心光晕 -->
+                        <Ellipse Width="460" Height="460" Canvas.Left="170" Canvas.Top="10">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#5500FFFF" Offset="0"/>
+                                    <GradientStop Color="#22FF00FF" Offset="0.55"/>
+                                    <GradientStop Color="#00000000" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <!-- 旋转光环 1：外圈刻度（顺时针） -->
+                        <Ellipse Width="340" Height="340" Canvas.Left="230" Canvas.Top="70"
+                         Stroke="#00FFFF" StrokeThickness="6" StrokeDashArray="0.2 3"
+                         Opacity="0.7" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                     From="0" To="360" Duration="0:0:40"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <!-- 旋转光环 2：粉色虚线（顺时针） -->
+                        <Ellipse Width="300" Height="300" Canvas.Left="250" Canvas.Top="90"
+                         Stroke="#FF00FF" StrokeThickness="3" StrokeDashArray="2 6"
+                         RenderTransformOrigin="0.5,0.5" Effect="{StaticResource PinkGlow}">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                     From="0" To="360" Duration="0:0:20"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <!-- 旋转光环 3：青色长短划线（逆时针） -->
+                        <Ellipse Width="250" Height="250" Canvas.Left="275" Canvas.Top="115"
+                         Stroke="#00FFFF" StrokeThickness="2.5" StrokeDashArray="12 4 2 4"
+                         RenderTransformOrigin="0.5,0.5" Effect="{StaticResource CyanGlow}">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform/>
+                            </Ellipse.RenderTransform>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                     From="360" To="0" Duration="0:0:12"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+
+                        <!-- 内圈细线 -->
+                        <Ellipse Width="200" Height="200" Canvas.Left="300" Canvas.Top="140"
+                         Stroke="#00FFFF" StrokeThickness="1" Opacity="0.6"/>
+
+                        <!-- 核心六边形 -->
+                        <Polygon Points="460,240 430,292 370,292 340,240 370,188 430,188"
+                         Stroke="#00FFFF" StrokeThickness="2.5"
+                         Effect="{StaticResource CyanGlow}"
+                         RenderTransformOrigin="0.5,0.5">
+                            <Polygon.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#CC2A0A55" Offset="0"/>
+                                    <GradientStop Color="#CC0A3A66" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Polygon.Fill>
+                            <Polygon.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Polygon.RenderTransform>
+                            <Polygon.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     From="1" To="1.12" Duration="0:0:1.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     From="1" To="1.12" Duration="0:0:1.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Polygon.Triggers>
+                        </Polygon>
+
+                        <!-- 核心文字 -->
+                        <TextBlock Canvas.Left="340" Canvas.Top="214" Width="120"
+                           Text="98%" Foreground="#FFFFFF" FontSize="30" FontWeight="Bold"
+                           FontFamily="Consolas" TextAlignment="Center"
+                           Effect="{StaticResource CyanGlow}"/>
+                        <TextBlock Canvas.Left="340" Canvas.Top="254" Width="120"
+                           Text="CORE SYNC" Foreground="#FF00FF" FontSize="10"
+                           FontFamily="Consolas" TextAlignment="Center"/>
+
+                        <!-- 扫描线 -->
+                        <Rectangle Width="800" Height="3" Canvas.Top="0" IsHitTestVisible="False">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#0000FFFF" Offset="0"/>
+                                    <GradientStop Color="#AA00FFFF" Offset="0.5"/>
+                                    <GradientStop Color="#0000FFFF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
+                                                     From="0" To="480" Duration="0:0:4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- 标题 -->
+                        <TextBlock Canvas.Left="0" Canvas.Top="14" Width="800"
+                           Text="NEON CORE // CONTROL INTERFACE"
+                           Foreground="#00FFFF" FontSize="24" FontWeight="Bold"
+                           FontFamily="Consolas" TextAlignment="Center"
+                           Effect="{StaticResource CyanGlow}"/>
+                        <TextBlock Canvas.Left="0" Canvas.Top="48" Width="800"
+                           Text="v2.077  ·  NEURAL LINK ESTABLISHED"
+                           Foreground="#FF00FF" FontSize="11"
+                           FontFamily="Consolas" TextAlignment="Center"/>
+
+                        <!-- 四角装饰 -->
+                        <Path Stroke="#00FFFF" StrokeThickness="3" Effect="{StaticResource CyanGlow}"
+                      Data="M 10,40 L 10,10 L 40,10
+                            M 760,10 L 790,10 L 790,40
+                            M 10,440 L 10,470 L 40,470
+                            M 760,470 L 790,470 L 790,440"/>
+
+                        <!-- ========== 左侧面板：系统状态 ========== -->
+                        <Rectangle Canvas.Left="30" Canvas.Top="95" Width="200" Height="270"
+                           Stroke="#00FFFF" StrokeThickness="1.5" Fill="#2200FFFF"
+                           RadiusX="4" RadiusY="4"/>
+                        <TextBlock Canvas.Left="45" Canvas.Top="105" Text="SYSTEM STATUS"
+                           Foreground="#00FFFF" FontSize="13" FontWeight="Bold" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="128" Width="170" Height="1" Fill="#00FFFF" Opacity="0.6"/>
+
+                        <!-- CPU -->
+                        <TextBlock Canvas.Left="45" Canvas.Top="145" Text="CPU" Foreground="#DCE7F0" FontSize="11" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="164" Width="170" Height="8" Fill="#1A2A3A"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="164" Width="20" Height="8" Fill="#00FFFF" Effect="{StaticResource CyanGlow}">
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Width" From="30" To="150" Duration="0:0:2.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- GPU -->
+                        <TextBlock Canvas.Left="45" Canvas.Top="190" Text="GPU" Foreground="#DCE7F0" FontSize="11" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="209" Width="170" Height="8" Fill="#1A2A3A"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="209" Width="20" Height="8" Fill="#FF00FF" Effect="{StaticResource PinkGlow}">
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Width" From="60" To="165" Duration="0:0:1.6"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- MEM -->
+                        <TextBlock Canvas.Left="45" Canvas.Top="235" Text="MEMORY" Foreground="#DCE7F0" FontSize="11" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="254" Width="170" Height="8" Fill="#1A2A3A"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="254" Width="20" Height="8" Fill="#00FFFF" Effect="{StaticResource CyanGlow}">
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Width" From="80" To="130" Duration="0:0:3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- NET -->
+                        <TextBlock Canvas.Left="45" Canvas.Top="280" Text="NETWORK" Foreground="#DCE7F0" FontSize="11" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="299" Width="170" Height="8" Fill="#1A2A3A"/>
+                        <Rectangle Canvas.Left="45" Canvas.Top="299" Width="20" Height="8" Fill="#FF00FF" Effect="{StaticResource PinkGlow}">
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Width" From="20" To="170" Duration="0:0:1.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- 状态指示灯 -->
+                        <Ellipse Canvas.Left="45" Canvas.Top="334" Width="10" Height="10" Fill="#00FF88" Effect="{StaticResource CyanGlow}">
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.15" Duration="0:0:0.6"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                        <TextBlock Canvas.Left="62" Canvas.Top="331" Text="ALL SYSTEMS NOMINAL"
+                           Foreground="#00FF88" FontSize="10" FontFamily="Consolas"/>
+
+                        <!-- ========== 右侧面板：数据流 ========== -->
+                        <Rectangle Canvas.Left="570" Canvas.Top="95" Width="200" Height="270"
+                           Stroke="#FF00FF" StrokeThickness="1.5" Fill="#22FF00FF"
+                           RadiusX="4" RadiusY="4"/>
+                        <TextBlock Canvas.Left="585" Canvas.Top="105" Text="DATA STREAM"
+                           Foreground="#FF00FF" FontSize="13" FontWeight="Bold" FontFamily="Consolas"/>
+                        <Rectangle Canvas.Left="585" Canvas.Top="128" Width="170" Height="1" Fill="#FF00FF" Opacity="0.6"/>
+
+                        <!-- 心电波形 -->
+                        <Polyline Canvas.Left="585" Canvas.Top="145"
+                          Stroke="#00FFFF" StrokeThickness="2" StrokeLineJoin="Round"
+                          Effect="{StaticResource CyanGlow}"
+                          Points="0,40 20,40 30,10 40,70 50,40 75,40 85,25 95,55 105,40 130,40 140,5 150,75 160,40 170,40"/>
+
+                        <!-- 十六进制日志 -->
+                        <TextBlock Canvas.Left="585" Canvas.Top="235" FontFamily="Consolas" FontSize="10"
+                           Foreground="#DCE7F0" LineHeight="16">
+                    <Run Text="0xA3F2 » SYNC OK"/><LineBreak/>
+                    <Run Text="0x7B10 » PACKET RX"/><LineBreak/>
+                    <Run Text="0xFF42 » ENCRYPT ON"/><LineBreak/>
+                    <Run Text="0x09CE » NODE 07 UP"/><LineBreak/>
+                    <Run Foreground="#FF00FF" Text="0xDEAD » ANOMALY 0"/>
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.45" Duration="0:0:0.9"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+
+                        <!-- ========== 底部按钮 ========== -->
+                        <Border Style="{StaticResource NeonBtn}" Canvas.Left="250" Canvas.Top="405" Width="90" Height="32">
+                            <TextBlock Text="INITIATE" Foreground="#00FFFF" FontFamily="Consolas" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border Style="{StaticResource NeonBtn}" Canvas.Left="355" Canvas.Top="405" Width="90" Height="32">
+                            <TextBlock Text="SCAN" Foreground="#00FFFF" FontFamily="Consolas" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border Style="{StaticResource NeonBtn}" Canvas.Left="460" Canvas.Top="405" Width="90" Height="32"
+                        BorderBrush="#FF00FF">
+                            <TextBlock Text="SHUTDOWN" Foreground="#FF00FF" FontFamily="Consolas" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- 底部文字 -->
+                        <TextBlock Canvas.Left="0" Canvas.Top="450" Width="800"
+                           Text="SYSTEM ONLINE" Foreground="#FF00FF" FontSize="10"
+                           FontFamily="Consolas" TextAlignment="Center"/>
+                    </Canvas>
+                </Viewbox>
+            </Grid>
+        </TabItem>
+        <TabItem Header="未来之城">
+            <Grid Background="#050713" ClipToBounds="True">
+                <Grid.Resources>
+                    <DropShadowEffect x:Key="CityCyanGlow" Color="#27E5FF" BlurRadius="22" ShadowDepth="0" Opacity="0.9"/>
+                    <DropShadowEffect x:Key="CityVioletGlow" Color="#B45CFF" BlurRadius="22" ShadowDepth="0" Opacity="0.85"/>
+                    <LinearGradientBrush x:Key="CityGlass" StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#CC13243D" Offset="0"/>
+                        <GradientStop Color="#99101931" Offset="0.55"/>
+                        <GradientStop Color="#CC271344" Offset="1"/>
+                    </LinearGradientBrush>
+                    <Style x:Key="CityWindow" TargetType="Rectangle">
+                        <Setter Property="Width" Value="7"/>
+                        <Setter Property="Height" Value="3"/>
+                        <Setter Property="Fill" Value="#60D7F4FF"/>
+                        <Setter Property="RadiusX" Value="1"/>
+                        <Setter Property="RadiusY" Value="1"/>
+                    </Style>
+                </Grid.Resources>
+
+                <Viewbox Stretch="Uniform">
+                    <Canvas Width="1100" Height="620" ClipToBounds="True">
+                        <!-- 深夜天空 -->
+                        <Rectangle Width="1100" Height="620">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#050713" Offset="0"/>
+                                    <GradientStop Color="#11122B" Offset="0.42"/>
+                                    <GradientStop Color="#241342" Offset="0.72"/>
+                                    <GradientStop Color="#070914" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+
+                        <!-- 城市中心的环境光 -->
+                        <Ellipse Width="800" Height="420" Canvas.Left="150" Canvas.Top="60" Opacity="0.8">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush>
+                                    <GradientStop Color="#5A6628C9" Offset="0"/>
+                                    <GradientStop Color="#2830CBEA" Offset="0.43"/>
+                                    <GradientStop Color="#00101830" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <!-- 月亮与星光 -->
+                        <Ellipse Width="112" Height="112" Canvas.Left="820" Canvas.Top="58" Fill="#D8EFFFFF" Effect="{StaticResource CityCyanGlow}"/>
+                        <Ellipse Width="98" Height="98" Canvas.Left="795" Canvas.Top="43" Fill="#101225"/>
+                        <Canvas Opacity="0.9">
+                            <Ellipse Width="3" Height="3" Fill="#FFFFFF" Canvas.Left="95" Canvas.Top="82"/>
+                            <Ellipse Width="2" Height="2" Fill="#9DEEFF" Canvas.Left="180" Canvas.Top="135"/>
+                            <Ellipse Width="4" Height="4" Fill="#FFFFFF" Canvas.Left="286" Canvas.Top="55"/>
+                            <Ellipse Width="2" Height="2" Fill="#CFB7FF" Canvas.Left="395" Canvas.Top="116"/>
+                            <Ellipse Width="3" Height="3" Fill="#FFFFFF" Canvas.Left="520" Canvas.Top="62"/>
+                            <Ellipse Width="2" Height="2" Fill="#81ECFF" Canvas.Left="675" Canvas.Top="142"/>
+                            <Ellipse Width="3" Height="3" Fill="#FFFFFF" Canvas.Left="738" Canvas.Top="65"/>
+                            <Ellipse Width="2" Height="2" Fill="#D8C1FF" Canvas.Left="982" Canvas.Top="102"/>
+                        </Canvas>
+
+                        <!-- 标题 -->
+                        <TextBlock Canvas.Left="50" Canvas.Top="38" Text="N E O N   C I T Y" Foreground="#E9FBFF"
+                                   FontFamily="Segoe UI Light" FontSize="30" FontWeight="Light" Effect="{StaticResource CityCyanGlow}"/>
+                        <TextBlock Canvas.Left="53" Canvas.Top="78" Text="SKYLINE DISTRICT  /  21:48  /  RAIN 18°C"
+                                   Foreground="#8096B4C8" FontFamily="Consolas" FontSize="11"/>
+                        <Rectangle Canvas.Left="52" Canvas.Top="101" Width="220" Height="1" Fill="#527FE8FF"/>
+                        <Rectangle Canvas.Left="52" Canvas.Top="101" Width="58" Height="2" Fill="#27E5FF" Effect="{StaticResource CityCyanGlow}"/>
+
+                        <!-- 远景楼群 -->
+                        <Path Fill="#12162B" Data="M 0,390 L 0,286 46,286 46,245 92,245 92,318 132,318 132,218 173,218 173,272 220,272 220,198 270,198 270,310 316,310 316,235 355,235 355,282 402,282 402,175 438,175 438,255 482,255 482,220 523,220 523,294 563,294 563,205 604,205 604,262 648,262 648,188 690,188 690,292 735,292 735,224 780,224 780,275 823,275 823,198 862,198 862,300 910,300 910,235 952,235 952,275 1004,275 1004,214 1052,214 1052,295 1100,295 1100,390 Z"/>
+                        <Path Stroke="#365A6C9D" StrokeThickness="1" Fill="Transparent"
+                              Data="M 0,286 L 46,286 46,245 92,245 M 132,318 L 132,218 173,218 M 220,272 L 220,198 270,198 M 316,310 L 316,235 355,235 M 402,282 L 402,175 438,175 M 482,255 L 482,220 523,220 M 563,294 L 563,205 604,205 M 648,262 L 648,188 690,188 M 735,292 L 735,224 780,224 M 823,275 L 823,198 862,198 M 910,300 L 910,235 952,235 M 1004,275 L 1004,214 1052,214"/>
+
+                        <!-- 中央塔楼 -->
+                        <Polygon Points="460,385 478,160 493,160 502,104 510,160 528,160 548,385"
+                                 Fill="#111B32" Stroke="#5F31CFE7" StrokeThickness="1.2"/>
+                        <Rectangle Canvas.Left="500" Canvas.Top="74" Width="4" Height="88" Fill="#32DFF9" Effect="{StaticResource CityCyanGlow}"/>
+                        <Ellipse Canvas.Left="495" Canvas.Top="67" Width="14" Height="14" Fill="#F05CFF" Effect="{StaticResource CityVioletGlow}">
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.25" Duration="0:0:0.8"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                        <Path Stroke="#29D8F4" StrokeThickness="1" Opacity="0.8" Data="M 477,184 L 528,184 M 474,214 L 531,214 M 472,246 L 534,246 M 469,280 L 537,280 M 466,317 L 541,317 M 463,355 L 545,355"/>
+
+                        <!-- 前景左侧大楼 -->
+                        <Polygon Points="55,420 78,205 225,205 244,420" Fill="#0A1021" Stroke="#4833B8D7" StrokeThickness="1.5"/>
+                        <Polygon Points="78,205 96,179 207,179 225,205" Fill="#152341" Stroke="#39C6EE"/>
+                        <Rectangle Canvas.Left="146" Canvas.Top="150" Width="9" Height="31" Fill="#36DFFF" Effect="{StaticResource CityCyanGlow}"/>
+                        <Path Stroke="#2767CFE8" StrokeThickness="1" Data="M 91,228 L 218,228 M 88,260 L 221,260 M 84,292 L 225,292 M 81,324 L 229,324 M 77,356 L 233,356 M 73,388 L 237,388"/>
+                        <Canvas Canvas.Left="101" Canvas.Top="239">
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="0" Canvas.Top="0"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="24" Canvas.Top="0" Fill="#F0B35CFF"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="48" Canvas.Top="0"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="72" Canvas.Top="0"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="96" Canvas.Top="0" Fill="#E0FF79CA"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="0" Canvas.Top="33" Fill="#D0FF76C8"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="24" Canvas.Top="33"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="48" Canvas.Top="33" Fill="#F4D867FF"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="72" Canvas.Top="33"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="96" Canvas.Top="33"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="0" Canvas.Top="66"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="24" Canvas.Top="66"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="48" Canvas.Top="66"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="72" Canvas.Top="66" Fill="#F2FF75C8"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="96" Canvas.Top="66"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="0" Canvas.Top="99"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="24" Canvas.Top="99" Fill="#EBC060FF"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="48" Canvas.Top="99"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="72" Canvas.Top="99"/>
+                            <Rectangle Style="{StaticResource CityWindow}" Canvas.Left="96" Canvas.Top="99" Fill="#DBFF72CA"/>
+                        </Canvas>
+
+                        <!-- 前景右侧双塔 -->
+                        <Polygon Points="827,420 842,238 947,238 960,420" Fill="#0B1022" Stroke="#674D55E5" StrokeThickness="1.5"/>
+                        <Polygon Points="936,420 952,185 1040,185 1058,420" Fill="#0B1124" Stroke="#4B2BD4EA" StrokeThickness="1.5"/>
+                        <Path Stroke="#AD5CFF" StrokeThickness="2" Effect="{StaticResource CityVioletGlow}" Data="M 952,185 L 1040,185 M 950,216 L 1043,216 M 948,250 L 1046,250 M 946,286 L 1049,286 M 943,325 L 1052,325 M 941,367 L 1055,367"/>
+                        <Rectangle Canvas.Left="984" Canvas.Top="149" Width="21" Height="36" Fill="#151C36" Stroke="#37DDF5"/>
+                        <Rectangle Canvas.Left="992" Canvas.Top="115" Width="5" Height="34" Fill="#27E5FF" Effect="{StaticResource CityCyanGlow}"/>
+
+                        <!-- 空中轨道 -->
+                        <Path Stroke="#233A526B" StrokeThickness="12" Data="M -20,354 C 250,326 470,382 1120,298"/>
+                        <Path Stroke="#6D25DAF4" StrokeThickness="2" Effect="{StaticResource CityCyanGlow}" Data="M -20,350 C 250,322 470,378 1120,294"/>
+                        <Border Width="88" Height="25" Canvas.Left="0" Canvas.Top="320" CornerRadius="12" Background="#E51A2942" BorderBrush="#37E5FF" BorderThickness="1.5" Effect="{StaticResource CityCyanGlow}">
+                            <Border.RenderTransform>
+                                <TranslateTransform X="0"/>
+                            </Border.RenderTransform>
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="-120" To="1160" Duration="0:0:8"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+                            <Grid>
+                                <Rectangle Width="52" Height="5" RadiusX="2" Fill="#65DDFB" HorizontalAlignment="Center"/>
+                                <Ellipse Width="5" Height="5" Fill="#FF5ACD" HorizontalAlignment="Left" Margin="8,0,0,0"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- 地面与透视车道 -->
+                        <Path Fill="#090C16" Data="M 0,408 L 1100,408 1100,620 0,620 Z"/>
+                        <Path Stroke="#6632BFE0" StrokeThickness="1" Data="M 0,420 L 1100,420 M 0,452 L 1100,452 M 0,492 L 1100,492 M 0,542 L 1100,542 M 0,602 L 1100,602"/>
+                        <Path Stroke="#3B2DE4FF" StrokeThickness="1" Data="M 0,620 L 480,408 M 170,620 L 510,408 M 360,620 L 535,408 M 550,620 L 560,408 M 740,620 L 585,408 M 930,620 L 610,408 M 1100,620 L 640,408"/>
+                        <Path Stroke="#20E1FF" StrokeThickness="3" Effect="{StaticResource CityCyanGlow}" Data="M 352,620 L 520,408 M 746,620 L 590,408"/>
+                        <Path Stroke="#D15CFF" StrokeThickness="2" StrokeDashArray="12 15" Effect="{StaticResource CityVioletGlow}" Data="M 550,620 L 556,408"/>
+
+                        <!-- 飞驰车辆灯迹 -->
+                        <Rectangle Canvas.Left="-160" Canvas.Top="512" Width="150" Height="3" RadiusX="2" Fill="#2DE7FF" Effect="{StaticResource CityCyanGlow}">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform/>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="0" To="1420" Duration="0:0:3.4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+                        <Rectangle Canvas.Left="1080" Canvas.Top="557" Width="115" Height="3" RadiusX="2" Fill="#F75CCB" Effect="{StaticResource CityVioletGlow}">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform/>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="0" To="-1350" Duration="0:0:2.7"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <!-- 悬浮信息卡 -->
+                        <Border Canvas.Left="665" Canvas.Top="72" Width="210" Height="96" CornerRadius="10"
+                                Background="{StaticResource CityGlass}" BorderBrush="#7737DDF5" BorderThickness="1">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#101A2A" BlurRadius="18" ShadowDepth="8" Opacity="0.8"/>
+                            </Border.Effect>
+                            <Grid Margin="15,10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="CITY PULSE" Foreground="#92EFFF" FontFamily="Consolas" FontSize="10"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="98.7" Foreground="White" FontFamily="Segoe UI Light" FontSize="29"/>
+                                    <TextBlock Text="  %" Foreground="#55E7FF" FontFamily="Consolas" FontSize="11" VerticalAlignment="Center"/>
+                                    <Polyline Margin="18,0,0,0" Width="78" Height="32" Stretch="Fill" Stroke="#54E9FF" StrokeThickness="2"
+                                              Points="0,24 9,21 17,26 25,9 33,18 42,5 51,22 60,16 69,19 78,7" Effect="{StaticResource CityCyanGlow}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- 扫描光扫过城市 -->
+                        <Rectangle Width="1100" Height="70" Canvas.Top="150" IsHitTestVisible="False" Opacity="0.18">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#0027E5FF" Offset="0"/>
+                                    <GradientStop Color="#AA27E5FF" Offset="0.55"/>
+                                    <GradientStop Color="#0027E5FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform/>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="-220" To="470" Duration="0:0:6"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+
+                        <TextBlock Canvas.Left="43" Canvas.Top="585" Text="SECTOR 07  ·  GRID ONLINE" Foreground="#7189A5B8" FontFamily="Consolas" FontSize="10"/>
+                        <TextBlock Canvas.Left="885" Canvas.Top="585" Text="LAT 31.2304  /  LNG 121.4737" Foreground="#7189A5B8" FontFamily="Consolas" FontSize="10"/>
+                    </Canvas>
+                </Viewbox>
+            </Grid>
+        </TabItem>
+        <TabItem>
+            <Grid>
+                <Path Stroke="Blue" Width="200" Height="300">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure  StartPoint="10,100">
+                                <LineSegment Point="100,100"></LineSegment>
+                                <LineSegment Point="100,50"></LineSegment>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <Path  Width="300"  Height="300" Stroke="Pink">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="10,100">
+                                <ArcSegment Point="250 150" Size="200,300"></ArcSegment>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <Path  Width="500"  Height="600" StrokeThickness="4" Stroke="DarkGreen">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="10,100">
+                                <ArcSegment IsLargeArc="True" Point="250 150" Size="200,300"></ArcSegment>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+
+                <Path Stroke="#FF00FF" StrokeThickness="3" StrokeLineJoin="Round"  Width="300"  Height="1300"
+      Fill="#44FF00FF"
+      Data="M 100,60
+            C 100,20 40,20 40,60
+            C 40,100 100,130 100,160
+            C 100,130 160,100 160,60
+            C 160,20 100,20 100,60 Z">
+                    <Path.Effect>
+                        <DropShadowEffect Color="#FF00FF" BlurRadius="20" ShadowDepth="0"/>
+                    </Path.Effect>
+                </Path>
+            </Grid>
+        </TabItem>
+
+    </TabControl>
+</Window>

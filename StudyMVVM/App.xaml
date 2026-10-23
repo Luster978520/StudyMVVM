@@ -1,0 +1,14 @@
+﻿<Application x:Class="StudyMVVM.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StudyMVVM"
+             StartupUri="Views/LogicView.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>  
+                <ResourceDictionary x:Name="btnStyle11" Source="Resource/BtnStyle1.xaml"/>
+                <ResourceDictionary x:Name="btnStyle22" Source="Resource/BtnStyle2.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

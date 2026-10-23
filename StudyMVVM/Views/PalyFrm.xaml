@@ -1,0 +1,421 @@
+﻿<Window x:Class="StudyMVVM.Views.PalyFrm"
+   
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="winAnimationPlayer"
+        Title="动画播放器"
+        Width="820"
+        Height="600"
+        MinWidth="650"
+        MinHeight="520"
+        WindowStartupLocation="CenterScreen"
+        Background="#F3F5F9"
+        FontFamily="Microsoft YaHei"
+        FontSize="14"
+        UseLayoutRounding="True">
+
+    <Window.Resources>
+
+        <!-- 普通按钮样式 -->
+        <Style x:Key="PlaybackButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="MinWidth" Value="82"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="BorderBrush" Value="#D8DEE8"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="bdrButtonChrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="6">
+
+                            <ContentPresenter
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                RecognizesAccessKey="True"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdrButtonChrome"
+                                        Property="Opacity"
+                                        Value="0.8"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bdrButtonChrome"
+                                        Property="Opacity"
+                                        Value="0.6"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bdrButtonChrome"
+                                        Property="Opacity"
+                                        Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 主要操作按钮 -->
+        <Style x:Key="PrimaryButtonStyle"
+               TargetType="{x:Type Button}"
+               BasedOn="{StaticResource PlaybackButtonStyle}">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#2563EB"/>
+        </Style>
+
+    </Window.Resources>
+    <Window.Triggers>
+        <!--开始-->
+        <EventTrigger SourceName="btnStart" RoutedEvent="Button.Click">
+            <EventTrigger.Actions>
+                <BeginStoryboard  x:Name="fadeStoryboarBegin">
+                    <Storyboard SpeedRatio="{Binding ElementName=sldPlaybackSpeed ,Path=Value }" CurrentTimeInvalidated="startStoryboard_CurrentTimeInvalidated" x:Name="startStoryboard">
+                        <DoubleAnimation Storyboard.TargetName="imgDay" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:5"
+                     ></DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+        <!--暂停-->
+        <EventTrigger SourceName="btnPause" RoutedEvent="Button.Click">
+            <EventTrigger.Actions>
+                <PauseStoryboard  BeginStoryboardName="fadeStoryboarBegin">
+
+                </PauseStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+        
+        <!--恢复-->
+        <EventTrigger SourceName="btnResume" RoutedEvent="Button.Click">
+            <EventTrigger.Actions>
+                <ResumeStoryboard  BeginStoryboardName="fadeStoryboarBegin">
+
+                </ResumeStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+        <!--停止-->
+        <EventTrigger SourceName="btnStop" RoutedEvent="Button.Click">
+            <EventTrigger.Actions>
+                <StopStoryboard  BeginStoryboardName="fadeStoryboarBegin">
+
+                </StopStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+        <!--中间位置播放-->
+        <EventTrigger SourceName="btnPlayFromMiddle" RoutedEvent="Button.Click">
+            <EventTrigger.Actions>
+                <SeekStoryboard  BeginStoryboardName="fadeStoryboarBegin" Offset="0:0:4">
+
+                </SeekStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid>
+        <TabControl  SelectedIndex="1">
+            <TabItem Header="一棵树">
+    <Grid x:Name="grdMain"
+          Margin="24">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部标题 -->
+        <StackPanel x:Name="pnlHeader"
+                    Grid.Row="0"
+                    Margin="0,0,0,18">
+
+            <TextBlock x:Name="txtTitle"
+                       Text="动画播放器"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       Foreground="#111827"/>
+
+            <TextBlock x:Name="txtSubtitle"
+                       Text="图片动画预览与播放控制"
+                       Margin="0,6,0,0"
+                       FontSize="13"
+                       Foreground="#6B7280"/>
+        </StackPanel>
+
+        <!-- 预览和控制区域 -->
+        <Border x:Name="bdrPlayerCard"
+                Grid.Row="1"
+                Padding="20"
+                Background="White"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                CornerRadius="12">
+
+            <Grid x:Name="grdPlayer">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 图片预览区域 -->
+                <Border x:Name="bdrPreview"
+                        Grid.Row="0"
+                        MinHeight="180"
+                        Background="White"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        CornerRadius="8" Margin="0,0,28,0">
+
+                    <Grid x:Name="grdPreview" Width="auto" HorizontalAlignment="Center">
+
+                        <!-- 提示文字位于图片下层，图片加载后会覆盖它 -->
+                        <TextBlock x:Name="txtPreviewPlaceholder"
+                                   Text="图片预览区域"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="#94A3B8"
+                                   FontSize="18"/>
+
+                        <Image x:Name="imgNight"
+                               Margin="10"
+                               Source="/image/treeNight.png"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                        <Image x:Name="imgDay"
+                               Margin="10"
+                               Source="/image/treeDay.png"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Grid>
+                </Border>
+
+                <!-- 播放控制按钮 -->
+                <StackPanel x:Name="pnlPlaybackControls"
+                            Grid.Row="1"
+                            Margin="0,20,0,0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                    <Button x:Name="btnStart"
+                            Content="开始"
+                            ToolTip="开始播放动画"
+                            Click="btnStart_Click"
+                            Style="{StaticResource PrimaryButtonStyle}">
+                        
+                    </Button>
+
+                    <Button x:Name="btnPause"
+                            Content="暂停"
+                            ToolTip="暂停当前动画"
+                            Style="{StaticResource PlaybackButtonStyle}">
+                    </Button>
+
+                    <Button x:Name="btnResume"
+                            Content="恢复"
+                            ToolTip="继续播放动画"
+                            Style="{StaticResource PlaybackButtonStyle}"/>
+
+                    <Button x:Name="btnStop"
+                            Content="停止"
+                            ToolTip="停止播放动画"
+                            Style="{StaticResource PlaybackButtonStyle}"/>
+
+                    <Button x:Name="btnPlayFromMiddle"
+                            Content="从中间播放"
+                            ToolTip="从动画中间位置开始播放"
+                            Style="{StaticResource PlaybackButtonStyle}"/>
+                </StackPanel>
+
+                <!-- 播放状态 -->
+                <StackPanel x:Name="pnlPlaybackStatus"
+                            Grid.Row="2"
+                            Margin="0,14,0,0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                    <TextBlock x:Name="txtStatusLabel"
+                               Text="当前状态："
+                               Foreground="#6B7280"/>
+
+                    <TextBlock x:Name="txtPlaybackStatus"
+                               Text="已停止"
+                               FontWeight="SemiBold"
+                               Foreground="#2563EB"/>
+                </StackPanel>
+                <StackPanel>
+                    
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- 播放速度 -->
+        <Border x:Name="bdrSpeedCard"
+                Grid.Row="2"
+                Margin="0,16,0,0"
+                Padding="18,14"
+                Background="White"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                CornerRadius="10">
+
+            <Grid x:Name="grdPlaybackSpeed">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="64"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="txtSpeedLabel"
+                           Grid.Column="0"
+                           Text="播放速度"
+                           Margin="0,0,18,0"
+                           VerticalAlignment="Center"
+                           Foreground="#374151"/>
+
+                <Slider x:Name="sldPlaybackSpeed"
+                        Grid.Column="1"
+                        Minimum="0.1"
+                        Maximum="3"
+                        Value="1"
+                        ValueChanged="sldPlaybackSpeed_ValueChanged"
+                        TickFrequency="0.25"
+                        TickPlacement="BottomRight"
+                        IsSnapToTickEnabled="True"
+                        AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="2"
+                        VerticalAlignment="Center"/>
+
+                <TextBlock x:Name="txtPlaybackSpeedValue"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Foreground="#2563EB"
+                           FontWeight="SemiBold"
+                           Text="{Binding ElementName=sldPlaybackSpeed,
+                                          Path=Value,
+                                          StringFormat={}{0:0.##} 倍}"/>
+
+                <TextBlock x:Name="txtProgressBar" Grid.Row="1" 
+           Grid.Column="0"
+           Text="播放进度"
+                           
+           Margin="0,10,18,0"
+           VerticalAlignment="Center"
+           Foreground="#374151"/>
+
+                <ProgressBar x:Name="ProgressBar1" Grid.Row="1" Grid.Column="1" Background="AliceBlue" Orientation="Horizontal" Margin="0 10 0 0" Height="8" Value="0.1" Minimum="0" Maximum="1">
+                </ProgressBar>
+
+                <TextBlock x:Name="txtProgressBarValue" Grid.Row="1" 
+           Grid.Column="2"
+           HorizontalAlignment="Right"
+           VerticalAlignment="Center"
+           Foreground="#2563EB"
+            Margin="-20 10 0 0"
+           FontWeight="SemiBold"
+           Text="{Binding ElementName=ProgressBar1,
+                          Path=Value,
+                          StringFormat={}{0:0.##}% }"/>
+            </Grid>
+           
+        </Border>
+
+    </Grid>
+            </TabItem>
+            <TabItem  Header="动画缓动">
+                <StackPanel>
+                <Button Content="点击播放"
+        Width="100"
+        Height="50">
+
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                        Storyboard.TargetProperty="Width"
+                        From="100"
+                        To="300"
+                        Duration="0:0:2">
+
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseIn" />
+                                        </DoubleAnimation.EasingFunction>
+
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                    <Button Content="点击播放"
+Width="100"
+Height="50" Margin=" 0 10 0 0">
+
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                Storyboard.TargetProperty="Width"
+                From="100"
+                To="300"
+                Duration="0:0:2">
+
+                                            <DoubleAnimation.EasingFunction>
+                                                <BounceEase EasingMode="EaseOut"
+                Bounces="3"
+                Bounciness="2" />
+                                            </DoubleAnimation.EasingFunction>
+
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+
+
+                </StackPanel>
+
+
+
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

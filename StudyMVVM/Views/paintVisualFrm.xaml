@@ -1,0 +1,71 @@
+﻿<Window x:Class="StudyMVVM.Views.paintVisualFrm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyMVVM.Views"
+        mc:Ignorable="d"
+        xmlns:CustCanvas="clr-namespace:StudyMVVM.CustCanvans"
+        Title="paintVisualFrm" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ToolBarTray Orientation="Vertical">
+                <ToolBar>
+                    <RadioButton x:Name="cmdAdd"  Margin="0,3"  Width="70" Height=" 80" >
+                    <StackPanel>
+                    <Rectangle Width="30" Height=" 30" Stroke="Black"  StrokeThickness="2"  Fill="Azure">
+                    </Rectangle>
+                        <TextBlock Text="增加方格"></TextBlock>
+                    </StackPanel>
+                    <RadioButton.Background>
+                        <SolidColorBrush Color="AliceBlue"> </SolidColorBrush>
+                    </RadioButton.Background>
+                </RadioButton >
+                    <RadioButton x:Name="cmdDelete"  Width="70" Height=" 80">
+                        <StackPanel>
+                        <Path  Stroke="SteelBlue" StrokeThickness="4" StrokeEndLineCap="Round" StrokeStartLineCap="Round" Fill="Red" HorizontalAlignment="Center">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <PathGeometry>
+                                        <PathFigure StartPoint="0,0">
+                                            <LineSegment  Point="23 23"></LineSegment>
+                                        </PathFigure>
+                                        <PathFigure StartPoint="0,23">
+                                            <LineSegment  Point="23 0"></LineSegment>
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                            <TextBlock FontFamily="黑体"  FontWeight="Bold" Text="删除"></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="cmdMove" Margin="0 0 3 0" Width="65" Height="80" >
+                    <StackPanel>
+                            <Image    Width="30" Height="30" Source="/image/鼠标点击.png" />
+                            <TextBlock FontFamily="黑体"  FontWeight="Bold" Text="选择/移动"></TextBlock>
+                    </StackPanel>
+                </RadioButton>
+                    <RadioButton x:Name="CmdSelectmultp"  Margin="0 0 3 0" Width="65" Height="80">
+                        <StackPanel>
+                            <Image    Width="30" Height="30" Source="/image/选择.png" />
+                            <TextBlock FontFamily="黑体"  FontWeight="Bold" Text="选择多个"></TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+            </ToolBar>
+            </ToolBarTray>
+            <Grid Grid.Column="1">
+                <Border>
+                    <CustCanvas:DrawingCanvas  x:Name="drawingSurface" Background="Beige" 
+                                               MouseLeftButtonDown="drawingSurface_MouseLeftButtonDown"
+                                               MouseMove="drawingSurface_MouseMove"
+                                               MouseLeftButtonUp="drawingSurface_MouseLeftButtonUp"></CustCanvas:DrawingCanvas>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
