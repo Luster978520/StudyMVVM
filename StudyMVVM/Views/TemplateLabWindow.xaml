@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:StudyMVVM.ViewModel"
+        xmlns:views="clr-namespace:StudyMVVM.Views"
         Title="Template Lab · WPF 控件模板交互课堂" Width="1440" Height="1080"
         MinWidth="1040" MinHeight="680" WindowStartupLocation="CenterOwner"
         Background="#F7F7FB" FontFamily="Microsoft YaHei UI, Microsoft YaHei, Segoe UI"
@@ -271,18 +272,15 @@
                         </StackPanel></Border>
                     </Grid>
 
-                    <!-- Reading detail is backed by each course card, rather than dead navigation. -->
+                    <!-- Each module creates its own interactive workspace and native controls. -->
                     <StackPanel Visibility="{Binding IsLesson, Converter={StaticResource BoolVisibility}}">
-                        <Border Style="{StaticResource LabCard}"><StackPanel>
-                            <TextBlock Text="本课知识点" Style="{StaticResource LabHeading}"/>
-                            <TextBlock Text="{Binding SelectedLesson.Topics}" Foreground="{StaticResource LabPurple}" FontSize="18" Margin="0,0,0,14"/>
-                            <TextBlock Text="{Binding SelectedLesson.MoreTopics}" Style="{StaticResource LabMutedText}"/>
-                            <Border Height="1" Background="{StaticResource LabLine}" Margin="0,24"/>
-                            <TextBlock Text="概念与使用方式" Style="{StaticResource LabHeading}"/>
-                            <TextBlock Text="{Binding SelectedLesson.Explanation}" Style="{StaticResource LabText}" FontSize="16" LineHeight="32"/>
-                            <Border Background="{StaticResource LabSoft}" Padding="20" CornerRadius="12" Margin="0,24"><TextBlock Text="动手建议：先预测外观会怎样变化，再进入对应实验，最后对照 XAML 验证自己的理解。" Style="{StaticResource LabText}"/></Border>
-                            <StackPanel Orientation="Horizontal"><Button Content="已读，进入对应实验 →" Style="{StaticResource LabAction}" Command="{Binding CompleteLessonCommand}" Margin="0,0,16,0"/><Button Content="← 返回学习路线" Style="{StaticResource LabSecondary}" Command="{Binding NavigateCommand}" CommandParameter="roadmap"/></StackPanel>
-                        </StackPanel></Border>
+                        <views:TemplateLessonWorkspace Lesson="{Binding SelectedLesson}"/>
+                        <WrapPanel Margin="0,24,0,0">
+                            <Button Content="← 上一模块" Style="{StaticResource LabSecondary}" IsEnabled="{Binding HasPreviousLesson}" Command="{Binding ChangeLessonCommand}" CommandParameter="-1" Margin="0,0,12,8"/>
+                            <Button Content="标记本模块已完成" Style="{StaticResource LabAction}" Command="{Binding CompleteLessonCommand}" Margin="0,0,12,8"/>
+                            <Button Content="下一模块 →" Style="{StaticResource LabSecondary}" IsEnabled="{Binding HasNextLesson}" Command="{Binding ChangeLessonCommand}" CommandParameter="1" Margin="0,0,12,8"/>
+                            <Button Content="返回学习路线" Style="{StaticResource LabLink}" Command="{Binding NavigateCommand}" CommandParameter="roadmap"/>
+                        </WrapPanel>
                     </StackPanel>
                     <TextBlock Text="{Binding Status}" Style="{StaticResource LabMutedText}" Margin="0,24,0,0" AutomationProperties.LiveSetting="Polite"/>
                 </StackPanel>

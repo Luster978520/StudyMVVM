@@ -18,7 +18,6 @@ namespace StudyMVVM.ViewModel
         public string Topics { get; set; }
         public string MoreTopics { get; set; }
         public string Explanation { get; set; }
-        public string ExperimentPage { get; set; }
     }
 
     public sealed class TemplateLabViewModel : INotifyPropertyChanged
@@ -53,14 +52,20 @@ namespace StudyMVVM.ViewModel
                 var lesson = p as TemplateLesson;
                 if (lesson == null) return;
                 SelectedLesson = lesson;
-                Changed("SelectedLesson");
+                Changed("SelectedLesson", "HasPreviousLesson", "HasNextLesson");
                 Navigate("lesson");
+                Status = "已进入模块 " + lesson.Number + "：" + lesson.Title + "。请操作本课的演示控件。";
             });
             CompleteLessonCommand = new LabCommand(p =>
             {
                 completed.Add(SelectedLesson.Number);
                 Changed("Progress", "ProgressText");
-                Navigate(SelectedLesson.ExperimentPage);
+                Status = "已完成模块 " + SelectedLesson.Number + "：" + SelectedLesson.Title;
+            });
+            ChangeLessonCommand = new LabCommand(p =>
+            {
+                int index = Lessons.IndexOf(SelectedLesson) + System.Convert.ToInt32(p);
+                if (index >= 0 && index < Lessons.Count) OpenLessonCommand.Execute(Lessons[index]);
             });
             AnswerCommand = new LabCommand(p =>
             {
@@ -88,6 +93,9 @@ namespace StudyMVVM.ViewModel
         public ICommand PreviewCommand { get; }
         public ICommand OpenLessonCommand { get; }
         public ICommand CompleteLessonCommand { get; }
+        public ICommand ChangeLessonCommand { get; }
+        public bool HasPreviousLesson => Lessons.IndexOf(SelectedLesson) > 0;
+        public bool HasNextLesson => Lessons.IndexOf(SelectedLesson) < Lessons.Count - 1;
         public ICommand AnswerCommand { get; }
         public ICommand RetryCommand { get; }
 
@@ -228,20 +236,20 @@ namespace StudyMVVM.ViewModel
         {
             var rows = new[]
             {
-                new[] { "认识控件模板", "Style 与 Template 的职责", "ControlTemplate · TargetType · 视觉树", "Style / ControlTemplate / DataTemplate", "Style 通过 Setter 配置属性，ControlTemplate 定义控件的视觉结构。替换 Template 会替换整棵模板视觉树；Button 的 Click、Command 等行为仍由控件类提供。DataTemplate 则描述数据如何显示，不负责替换控件外壳。", "lab" },
-                new[] { "搭建第一份模板", "用 Border 与内容宿主重塑 Button", "ContentPresenter · Padding · 对齐", "Content · ContentTemplate · 继承属性", "先指定 TargetType，再用 Border 构建外壳、ContentPresenter 承载内容。通过 TemplateBinding 传递 Background、Padding 与内容对齐。不要把控件文字写死在模板中；保留 Content 和 ContentTemplate，才能复用文字、图标或复杂内容。", "lab" },
-                new[] { "模板属性传递", "从控件属性连接到内部元素", "TemplateBinding · TemplatedParent", "依赖属性 · OneWay / TwoWay · 优先级", "TemplateBinding 是针对模板的轻量单向绑定，连接模板内部属性与模板所属控件的依赖属性。完整 Binding 可用 RelativeSource TemplatedParent 显式指定控件作为来源，并支持转换器及 TwoWay。外部属性能否生效，还取决于依赖属性优先级。", "lab" },
-                new[] { "触发器与交互", "为鼠标、焦点与选择提供反馈", "Trigger · MultiTrigger · DataTrigger", "MultiDataTrigger · EventTrigger · 优先级", "Trigger 检查依赖属性，DataTrigger 检查绑定值；多条件版本要求所有条件满足。EventTrigger 通过事件启动 Storyboard。Button 的 IsMouseOver 与 IsPressed 可能同时为真，需明确 Setter 的覆盖顺序，并为 IsEnabled=False 与键盘焦点保留反馈。", "states" },
-                new[] { "视觉状态与动画", "把每次状态变化变成清晰反馈", "VisualStateManager · VisualStateGroup", "VisualTransition · Storyboard · 缓动", "在模板根元素声明 VisualStateGroups。CommonStates 包含 Normal、MouseOver、Pressed、Disabled；同组一次只激活一个状态，FocusStates 则独立工作。VisualTransition 描述过渡，Storyboard 描述属性动画。标准控件按约定驱动状态，自定义控件可调用 GoToState。", "states" },
-                new[] { "模板树与名称作用域", "看懂模板生成的每一个元素", "逻辑树 / 视觉树 · x:Name · NameScope", "FindName · GetTemplateChild · ApplyTemplate", "逻辑树描述内容关系，视觉树还包含模板生成的元素。每个模板实例都有独立名称作用域。模板外部可先 ApplyTemplate，再调用 control.Template.FindName(name, control)；控件内部通常在 OnApplyTemplate 中调用 GetTemplateChild。查找结果必须判空。", "tree" },
-                new[] { "模板部件与控件契约", "换外观时保留必要的功能", "TemplatePart · PART_ContentHost", "PART_Track · OnApplyTemplate · 空值处理", "控件可能依赖特定命名部件：TextBox 的 PART_ContentHost 承载文本，Slider 的 PART_Track 负责轨道。按对应控件文档保留部件名称与类型。OnApplyTemplate 可能多次执行，应解绑旧部件事件、重新查找并绑定新部件，同时处理部件缺失。", "tree" },
-                new[] { "内容与列表模板", "分清控件、数据和布局的模板", "DataTemplate · ItemTemplate · ItemsPanel", "ItemsPresenter · ItemContainerStyle · Selector", "ControlTemplate 定义控件外壳；DataTemplate 定义一项数据的呈现；ItemsPanelTemplate 定义多项的布局。ItemsPresenter 在模板内承载集合项区域。ItemContainerStyle 配置 ListBoxItem 等容器，TemplateSelector 按数据选择模板。修改列表模板时还要检查滚动与虚拟化。", "tree" },
-                new[] { "资源、样式与主题", "让模板在整个应用中复用", "ResourceDictionary · BasedOn · 隐式样式", "StaticResource / DynamicResource · Generic.xaml", "将共享模板与画刷放进 ResourceDictionary，并通过合并字典组织。BasedOn 复用样式；无 x:Key 的目标类型样式可隐式应用。StaticResource 在查找时取得资源，DynamicResource 支持后续资源变化。自定义控件默认样式通常位于 Themes/Generic.xaml，并配合 DefaultStyleKey。", "lab" },
-                new[] { "常用控件实战", "从 Button 扩展到输入与选择", "Button · ToggleButton · CheckBox · RadioButton", "TextBox · ComboBox · ListBox · Slider · ProgressBar", "先从 Button 的内容、悬停、按下和禁用开始。再处理 ToggleButton 的 IsChecked、TextBox 的内容宿主、ComboBox 的弹出层、Slider 的轨道和 ProgressBar 的进度显示。每类控件都有自己的状态与模板部件契约，不能直接用同一份 Border 模板替换所有控件。", "challenge" },
-                new[] { "自定义控件与 MVVM", "连接外观、命令和控件逻辑", "CustomControl / UserControl · DefaultStyleKey", "DependencyProperty · ICommand · RoutedEvent", "UserControl 适合组合现有控件；需要可替换外观时通常派生自 Control。用依赖属性暴露可绑定参数、ICommand 承载操作、路由事件通知交互。模板负责视觉呈现，ViewModel 负责页面状态和命令；避免在模板里绑定到固定窗口或写死业务数据。", "challenge" },
-                new[] { "调试与质量检查", "交付稳定、可访问的控件模板", "Live Visual Tree · 属性优先级 · 绑定诊断", "键盘焦点 · 高对比度 · 虚拟化 · 动画性能", "在 Live Visual Tree 中检查实际模板元素，并查看依赖属性的有效值来源。绑定失败时检查输出窗口、DataContext 与名称作用域。通过 Tab、空格和回车验证键盘操作，检查高对比度、禁用状态与焦点提示。大列表保留虚拟化，避免过度复杂的视觉树和无休止动画。", "challenge" }
+                new[] { "认识控件模板", "Style 与 Template 的职责", "ControlTemplate · TargetType · 视觉树", "Style / ControlTemplate / DataTemplate", "Style 通过 Setter 配置属性，ControlTemplate 定义控件的视觉结构。替换 Template 会替换整棵模板视觉树；Button 的 Click、Command 等行为仍由控件类提供。DataTemplate 则描述数据如何显示，不负责替换控件外壳。" },
+                new[] { "搭建第一份模板", "用 Border 与内容宿主重塑 Button", "ContentPresenter · Padding · 对齐", "Content · ContentTemplate · 继承属性", "先指定 TargetType，再用 Border 构建外壳、ContentPresenter 承载内容。通过 TemplateBinding 传递 Background、Padding 与内容对齐。不要把控件文字写死在模板中；保留 Content 和 ContentTemplate，才能复用文字、图标或复杂内容。" },
+                new[] { "模板属性传递", "从控件属性连接到内部元素", "TemplateBinding · TemplatedParent", "依赖属性 · OneWay / TwoWay · 优先级", "TemplateBinding 是针对模板的轻量单向绑定，连接模板内部属性与模板所属控件的依赖属性。完整 Binding 可用 RelativeSource TemplatedParent 显式指定控件作为来源，并支持转换器及 TwoWay。外部属性能否生效，还取决于依赖属性优先级。" },
+                new[] { "触发器与交互", "为鼠标、焦点与选择提供反馈", "Trigger · MultiTrigger · DataTrigger", "MultiDataTrigger · EventTrigger · 优先级", "Trigger 检查依赖属性，DataTrigger 检查绑定值；多条件版本要求所有条件满足。EventTrigger 通过事件启动 Storyboard。Button 的 IsMouseOver 与 IsPressed 可能同时为真，需明确 Setter 的覆盖顺序，并为 IsEnabled=False 与键盘焦点保留反馈。" },
+                new[] { "视觉状态与动画", "把每次状态变化变成清晰反馈", "VisualStateManager · VisualStateGroup", "VisualTransition · Storyboard · 缓动", "在模板根元素声明 VisualStateGroups。CommonStates 包含 Normal、MouseOver、Pressed、Disabled；同组一次只激活一个状态，FocusStates 则独立工作。VisualTransition 描述过渡，Storyboard 描述属性动画。标准控件按约定驱动状态，自定义控件可调用 GoToState。" },
+                new[] { "模板树与名称作用域", "看懂模板生成的每一个元素", "逻辑树 / 视觉树 · x:Name · NameScope", "FindName · GetTemplateChild · ApplyTemplate", "逻辑树描述内容关系，视觉树还包含模板生成的元素。每个模板实例都有独立名称作用域。模板外部可先 ApplyTemplate，再调用 control.Template.FindName(name, control)；控件内部通常在 OnApplyTemplate 中调用 GetTemplateChild。查找结果必须判空。" },
+                new[] { "模板部件与控件契约", "换外观时保留必要的功能", "TemplatePart · PART_ContentHost", "PART_Track · OnApplyTemplate · 空值处理", "控件可能依赖特定命名部件：TextBox 的 PART_ContentHost 承载文本，Slider 的 PART_Track 负责轨道。按对应控件文档保留部件名称与类型。OnApplyTemplate 可能多次执行，应解绑旧部件事件、重新查找并绑定新部件，同时处理部件缺失。" },
+                new[] { "内容与列表模板", "分清控件、数据和布局的模板", "DataTemplate · ItemTemplate · ItemsPanel", "ItemsPresenter · ItemContainerStyle · Selector", "ControlTemplate 定义控件外壳；DataTemplate 定义一项数据的呈现；ItemsPanelTemplate 定义多项的布局。ItemsPresenter 在模板内承载集合项区域。ItemContainerStyle 配置 ListBoxItem 等容器，TemplateSelector 按数据选择模板。修改列表模板时还要检查滚动与虚拟化。" },
+                new[] { "资源、样式与主题", "让模板在整个应用中复用", "ResourceDictionary · BasedOn · 隐式样式", "StaticResource / DynamicResource · Generic.xaml", "将共享模板与画刷放进 ResourceDictionary，并通过合并字典组织。BasedOn 复用样式；无 x:Key 的目标类型样式可隐式应用。StaticResource 在查找时取得资源，DynamicResource 支持后续资源变化。自定义控件默认样式通常位于 Themes/Generic.xaml，并配合 DefaultStyleKey。" },
+                new[] { "常用控件实战", "从 Button 扩展到输入与选择", "Button · ToggleButton · CheckBox · RadioButton", "TextBox · ComboBox · ListBox · Slider · ProgressBar", "先从 Button 的内容、悬停、按下和禁用开始。再处理 ToggleButton 的 IsChecked、TextBox 的内容宿主、ComboBox 的弹出层、Slider 的轨道和 ProgressBar 的进度显示。每类控件都有自己的状态与模板部件契约，不能直接用同一份 Border 模板替换所有控件。" },
+                new[] { "自定义控件与 MVVM", "连接外观、命令和控件逻辑", "CustomControl / UserControl · DefaultStyleKey", "DependencyProperty · ICommand · RoutedEvent", "UserControl 适合组合现有控件；需要可替换外观时通常派生自 Control。用依赖属性暴露可绑定参数、ICommand 承载操作、路由事件通知交互。模板负责视觉呈现，ViewModel 负责页面状态和命令；避免在模板里绑定到固定窗口或写死业务数据。" },
+                new[] { "调试与质量检查", "交付稳定、可访问的控件模板", "Live Visual Tree · 属性优先级 · 绑定诊断", "键盘焦点 · 高对比度 · 虚拟化 · 动画性能", "在 Live Visual Tree 中检查实际模板元素，并查看依赖属性的有效值来源。绑定失败时检查输出窗口、DataContext 与名称作用域。通过 Tab、空格和回车验证键盘操作，检查高对比度、禁用状态与焦点提示。大列表保留虚拟化，避免过度复杂的视觉树和无休止动画。" }
             };
-            return rows.Select((r, i) => new TemplateLesson { Number = (i + 1).ToString("00"), Title = r[0], Summary = r[1], Topics = r[2], MoreTopics = r[3], Explanation = r[4], ExperimentPage = r[5] }).ToList();
+            return rows.Select((r, i) => new TemplateLesson { Number = (i + 1).ToString("00"), Title = r[0], Summary = r[1], Topics = r[2], MoreTopics = r[3], Explanation = r[4] }).ToList();
         }
     }
 

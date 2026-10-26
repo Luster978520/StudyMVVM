@@ -75,6 +75,8 @@
     </Compile>
     <Compile Include="ViewModel\LogicViewModel.cs" />
     <Compile Include="ViewModel\TemplateLabViewModel.cs" />
+    <Compile Include="Views\TemplateLessonWorkspace.cs" />
+    <Compile Include="ViewModel\LessonCounterViewModel.cs" />
     <Compile Include="Views\TemplateLabWindow.xaml.cs">
       <DependentUpon>TemplateLabWindow.xaml</DependentUpon>
     </Compile>
