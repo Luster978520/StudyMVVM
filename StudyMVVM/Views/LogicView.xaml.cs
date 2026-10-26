@@ -54,6 +54,25 @@ namespace StudyMVVM.Views
             palyFrm.ShowDialog();
         }
 
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            RenderAndRotateFrm renderAndRotateFrm = new RenderAndRotateFrm();
+            renderAndRotateFrm.ShowDialog();
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+
+            controlTemplateFrm controlTemplate=new controlTemplateFrm();
+            controlTemplate.ShowDialog();
+        }
+
+        private void OpenTemplateLab_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new TemplateLabWindow { Owner = this };
+            window.Show();
+        }
+
         //    private void Button_Click(object sender, RoutedEventArgs e)
         //    {
         //        string account= logicViewModel.Account;

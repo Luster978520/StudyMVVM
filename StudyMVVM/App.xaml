@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>  
                 <ResourceDictionary x:Name="btnStyle11" Source="Resource/BtnStyle1.xaml"/>
                 <ResourceDictionary x:Name="btnStyle22" Source="Resource/BtnStyle2.xaml"/>
+                <ResourceDictionary x:Name="playFrm" Source="/Resource/PlayFrmDic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

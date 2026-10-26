@@ -1,0 +1,292 @@
+<Window x:Class="StudyMVVM.Views.TemplateLabWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:StudyMVVM.ViewModel"
+        Title="Template Lab · WPF 控件模板交互课堂" Width="1440" Height="1080"
+        MinWidth="1040" MinHeight="680" WindowStartupLocation="CenterOwner"
+        Background="#F7F7FB" FontFamily="Microsoft YaHei UI, Microsoft YaHei, Segoe UI"
+        Foreground="#282637" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resource/TemplateLabStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <vm:LabContentWidthConverter x:Key="ContentWidth"/>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="{StaticResource LabPage}">
+        <Grid.RowDefinitions><RowDefinition Height="72"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+        <!-- Shared application header. All page content below is native WPF. -->
+        <Border Background="White" BorderBrush="#F0EFF5" BorderThickness="0,0,0,1">
+            <Grid Margin="24,0">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="188"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{StaticResource LabPurple}" Width="32" Height="32" CornerRadius="8">
+                        <TextBlock Text="T" FontSize="21" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Template Lab" FontSize="17" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,16,0">
+                    <TextBlock Text="WPF 交互课堂" Foreground="{StaticResource LabMuted}"/>
+                    <TextBlock Text="/" Margin="16,0" Foreground="#DAD6E6"/>
+                    <TextBlock Text="{Binding SectionName}" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{StaticResource LabPage}" Padding="14,8"><TextBlock Text="原生 WPF  ·  交互学习" Style="{StaticResource LabMutedText}"/></Border>
+                    <Border Background="{StaticResource LabSoft}" CornerRadius="8" Width="32" Height="32" Margin="24,0,0,0">
+                        <TextBlock Text="LC" Foreground="{StaticResource LabPurple}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="212"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+            <Border Background="White">
+                <DockPanel Margin="20,24,20,20" LastChildFill="True">
+                    <Border DockPanel.Dock="Bottom" Style="{StaticResource LabCard}" Background="{StaticResource LabPage}" Padding="16" Margin="0,20,0,0">
+                        <StackPanel>
+                            <TextBlock Text="每一次动手，都有收获" Style="{StaticResource LabMutedText}" Foreground="{StaticResource LabInk}"/>
+                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Maximum="100" Height="5" Background="#E7E5EE" Foreground="{StaticResource LabPurple}" BorderThickness="0" Margin="0,14,0,10"/>
+                            <TextBlock Text="{Binding ProgressText}" Style="{StaticResource LabMutedText}" FontSize="11"/>
+                            <TextBlock Text="本次窗口内记录学习进度" Style="{StaticResource LabMutedText}" FontSize="10" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="WORKSPACE" FontSize="10" Foreground="{StaticResource LabMuted}" Margin="0,0,0,14"/>
+                        <RadioButton Content="▦   学习路线" GroupName="Navigation" Style="{StaticResource LabNav}" IsChecked="{Binding RoadmapNavSelected, Mode=OneWay}" Command="{Binding NavigateCommand}" CommandParameter="roadmap"/>
+                        <RadioButton Content="⌘   模板实验室" GroupName="Navigation" Style="{StaticResource LabNav}" IsChecked="{Binding LabNavSelected, Mode=OneWay}" Command="{Binding NavigateCommand}" CommandParameter="lab"/>
+                        <RadioButton Content="◉   状态与动画" GroupName="Navigation" Style="{StaticResource LabNav}" IsChecked="{Binding IsStates, Mode=OneWay}" Command="{Binding NavigateCommand}" CommandParameter="states"/>
+                        <RadioButton Content="◇   实战挑战" GroupName="Navigation" Style="{StaticResource LabNav}" IsChecked="{Binding IsChallenge, Mode=OneWay}" Command="{Binding NavigateCommand}" CommandParameter="challenge"/>
+                        <Border Height="1" Background="{StaticResource LabLine}" Margin="0,20,0,10"/>
+                        <TextBlock Text="本节知识" Style="{StaticResource LabMutedText}" Margin="0,0,0,8"/>
+                        <Button Content="01  模板的组成" Style="{StaticResource LabLink}" Foreground="{StaticResource LabMuted}" FontSize="12" Command="{Binding NavigateCommand}" CommandParameter="tree"/>
+                        <Button Content="02  属性如何传递" Style="{StaticResource LabLink}" Foreground="{StaticResource LabMuted}" FontSize="12" Command="{Binding NavigateCommand}" CommandParameter="lab"/>
+                        <Button Content="03  交互状态反馈" Style="{StaticResource LabLink}" Foreground="{StaticResource LabMuted}" FontSize="12" Command="{Binding NavigateCommand}" CommandParameter="states"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <ScrollViewer x:Name="ContentScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="False">
+                <StackPanel Margin="32,30,32,24" MinWidth="880" Width="{Binding ViewportWidth, ElementName=ContentScroll, Converter={StaticResource ContentWidth}}">
+                    <TextBlock Text="{Binding Eyebrow}" Foreground="{StaticResource LabPurple}" FontSize="11"/>
+                    <TextBlock Text="{Binding PageTitle}" FontSize="30" FontWeight="Bold" Margin="0,12,0,14"/>
+                    <TextBlock Text="{Binding PageSubtitle}" Style="{StaticResource LabMutedText}" FontSize="13" Margin="0,0,0,30"/>
+
+                    <!-- Learning path: twelve clickable, wrapping lesson cards. -->
+                    <StackPanel Visibility="{Binding IsRoadmap, Converter={StaticResource BoolVisibility}}">
+                        <Border Style="{StaticResource LabCard}" Background="{StaticResource LabSoft}" Padding="26" Margin="0,0,0,24">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="继续上次的探索 / MODULE 03" Foreground="{StaticResource LabPurple}" FontSize="11"/>
+                                    <TextBlock Text="让外部属性，走进模板内部" FontSize="22" Margin="0,14,0,12"/>
+                                    <TextBlock Text="TemplateBinding · TemplatedParent · 单向与双向绑定" Style="{StaticResource LabMutedText}"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="进入模板实验室  →" Style="{StaticResource LabAction}" Width="228" VerticalAlignment="Top" Margin="16,0,0,0" Command="{Binding NavigateCommand}" CommandParameter="lab"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Style="{StaticResource LabText}" Margin="0,0,0,24"><Run Text="12 个知识模块" FontWeight="SemiBold"/><Run Text="       从基础到进阶       每课包含 概念 / 演示 / 实验 / 检查" Foreground="#777486" FontSize="12"/></TextBlock>
+                        <ItemsControl ItemsSource="{Binding Lessons}" Margin="0,0,-18,0">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource LabAction}" Background="White" Foreground="{StaticResource LabInk}" HorizontalContentAlignment="Stretch" Padding="20" Margin="0,0,18,18" MinHeight="190" VerticalContentAlignment="Top"
+                                            Command="{Binding DataContext.OpenLessonCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition Width="*"/><ColumnDefinition Width="16"/></Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Number}" Foreground="{StaticResource LabPurple}" FontSize="16"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="16" TextWrapping="Wrap"/>
+                                                <TextBlock Grid.Column="2" Text="↗" Foreground="{StaticResource LabMuted}"/>
+                                            </Grid>
+                                            <TextBlock Text="{Binding Summary}" Style="{StaticResource LabMutedText}" Margin="0,0,0,8"/>
+                                            <TextBlock Text="{Binding Topics}" Style="{StaticResource LabText}" FontSize="11" Margin="0,0,0,6"/>
+                                            <TextBlock Text="{Binding MoreTopics}" Style="{StaticResource LabMutedText}" FontSize="11"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <!-- Template playground. Parameters drive the real ControlTemplate. -->
+                    <StackPanel Visibility="{Binding IsLab, Converter={StaticResource BoolVisibility}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="1.9*" MinWidth="530"/><ColumnDefinition Width="20"/><ColumnDefinition Width="*" MinWidth="310"/></Grid.ColumnDefinitions>
+                            <Border Style="{StaticResource LabCard}" Background="{StaticResource LabDark}" MinHeight="600">
+                                <DockPanel LastChildFill="True">
+                                    <Grid DockPanel.Dock="Top" Margin="0,0,0,24"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                        <TextBlock Text="●  ButtonTemplate.xaml" Style="{StaticResource LabCodeText}"/>
+                                        <Button Grid.Column="1" Content="复制 XAML" Style="{StaticResource LabLink}" Foreground="#B49CF5" FontSize="11" Padding="0" Click="CopyCode_Click"/>
+                                    </Grid>
+                                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,24">
+                                        <Border Background="{StaticResource LabSoft}" CornerRadius="8" Padding="20,6"><TextBlock Text="XAML" Foreground="{StaticResource LabPurple}" FontSize="11"/></Border>
+                                        <Button Content="视觉树 ↗" Style="{StaticResource LabLink}" Foreground="{StaticResource LabCode}" Margin="16,0" Padding="0" Command="{Binding NavigateCommand}" CommandParameter="tree"/>
+                                        <TextBlock Text="对照讲解" Foreground="#918CA5" VerticalAlignment="Center" FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock DockPanel.Dock="Bottom" Text="↳  外部设置 Background，内部 Border 通过 TemplateBinding 同步显示。" Style="{StaticResource LabMutedText}" Foreground="{StaticResource LabCode}" Margin="0,28,0,22"/>
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <ItemsControl ItemsSource="{Binding CodeLines}">
+                                            <ItemsControl.ItemTemplate><DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Height="24"><TextBlock Text="{Binding Number}" Width="36" FontFamily="Consolas" Foreground="#8D87A2" FontSize="12"/><TextBlock Text="{Binding Text}" Foreground="{Binding Color}" FontFamily="Consolas" FontSize="13"/></StackPanel>
+                                            </DataTemplate></ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </DockPanel>
+                            </Border>
+                            <StackPanel Grid.Column="2">
+                                <Border Style="{StaticResource LabCard}" Margin="0,0,0,20">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,18"><TextBlock Text="控件预览" Style="{StaticResource LabText}" FontWeight="SemiBold"/><Border Background="{StaticResource LabSoft}" CornerRadius="8" Padding="16,5" HorizontalAlignment="Right"><TextBlock Text="BUTTON" FontSize="11" Foreground="{StaticResource LabPurple}"/></Border></Grid>
+                                        <Border Background="{StaticResource LabPage}" CornerRadius="12" Height="172">
+                                            <Button Content="Hello, Template" Style="{StaticResource LabDemo}" Command="{Binding PreviewCommand}" AutomationProperties.AutomationId="TemplatePreviewButton"/>
+                                        </Border>
+                                        <TextBlock Text="点击下方参数，观察模板如何改变外观。" Style="{StaticResource LabMutedText}" Margin="0,16,0,6"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{StaticResource LabCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="试着改一改" Style="{StaticResource LabHeading}"/>
+                                        <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="CornerRadius" FontFamily="Consolas" Style="{StaticResource LabMutedText}" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="1" Content="8" Width="54" Style="{StaticResource LabSecondary}" Padding="8,6" Margin="4,0" Command="{Binding RadiusCommand}" CommandParameter="8"/>
+                                            <Button Grid.Column="2" Content="24" Width="54" Style="{StaticResource LabSecondary}" Padding="8,6" Command="{Binding RadiusCommand}" CommandParameter="24"/>
+                                        </Grid>
+                                        <Slider Value="{Binding Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="32" TickFrequency="1" IsSnapToTickEnabled="True" Margin="0,0,0,12" AutomationProperties.Name="圆角半径"/>
+                                        <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <TextBlock Text="Background" FontFamily="Consolas" Style="{StaticResource LabMutedText}" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal"><Ellipse Width="16" Height="16" Fill="{Binding PreviewBackground}" Margin="0,0,8,0"/><TextBlock Text="{Binding BackgroundHex}" FontSize="11" VerticalAlignment="Center"/></StackPanel>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                            <Button Content="紫色" Style="{StaticResource LabSecondary}" Padding="10,5" Command="{Binding ColorCommand}" CommandParameter="#7055D5" Margin="0,0,8,0"/>
+                                            <Button Content="青绿" Style="{StaticResource LabSecondary}" Padding="10,5" Command="{Binding ColorCommand}" CommandParameter="#208261"/>
+                                        </StackPanel>
+                                        <Border Height="1" Background="{StaticResource LabLine}"/>
+                                        <TextBlock Text="思考一下" Foreground="{StaticResource LabPurple}" FontSize="12" Margin="0,14,0,8"/>
+                                        <TextBlock Text="如果把 Background 写成固定颜色，外部设置还会生效吗？" Style="{StaticResource LabText}" FontSize="12" Margin="0,0,0,14"/>
+                                        <Button Content="去观察控件状态  →" Style="{StaticResource LabSecondary}" Command="{Binding NavigateCommand}" CommandParameter="states"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                        <Border Style="{StaticResource LabCard}" Background="{StaticResource LabSoft}" Padding="18" Margin="0,24,0,16"><StackPanel>
+                            <TextBlock Text="01  记住这个连接" FontSize="11" Foreground="{StaticResource LabPurple}" Margin="0,0,0,8"/>
+                            <TextBlock Text="控件属性 → TemplateBinding（单向）→ 模板内部元素。需要转换器或双向更新时，使用 Binding + RelativeSource TemplatedParent。" Style="{StaticResource LabText}" FontSize="12"/>
+                        </StackPanel></Border>
+                        <StackPanel Orientation="Horizontal"><Button Content="← 返回学习路线" Style="{StaticResource LabLink}" Foreground="{StaticResource LabMuted}" Command="{Binding NavigateCommand}" CommandParameter="roadmap" Margin="0,0,24,0"/><Button Content="下一步：完成一份状态按钮模板 →" Style="{StaticResource LabLink}" Command="{Binding NavigateCommand}" CommandParameter="challenge"/></StackPanel>
+                    </StackPanel>
+
+                    <!-- Visual anatomy, with the same preview and a real template structure. -->
+                    <StackPanel Visibility="{Binding IsTree, Converter={StaticResource BoolVisibility}}">
+                        <Grid MinHeight="460"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="1.3*"/></Grid.ColumnDefinitions>
+                            <Border Style="{StaticResource LabCard}"><StackPanel>
+                                <TextBlock Text="视觉树" Style="{StaticResource LabHeading}"/>
+                                <TextBlock Text="模板生成的元素" Foreground="{StaticResource LabPurple}" Margin="0,0,0,24"/>
+                                <TextBlock Text="Button" Style="{StaticResource LabText}"/>
+                                <Border Background="{StaticResource LabSoft}" CornerRadius="8" Padding="12" Margin="0,12"><TextBlock Text="└ Border · Chrome" Foreground="{StaticResource LabPurple}"/></Border>
+                                <TextBlock Text="    └ ContentPresenter" Style="{StaticResource LabText}" Margin="0,0,0,18"/>
+                                <TextBlock Text="        └ TextBlock" Style="{StaticResource LabText}"/>
+                                <TextBlock Text="NameScope 属于每个模板实例；相同 x:Name 不会跨实例冲突。" Style="{StaticResource LabMutedText}" Margin="0,30,0,0"/>
+                            </StackPanel></Border>
+                            <Border Grid.Column="2" Style="{StaticResource LabCard}"><StackPanel>
+                                <TextBlock Text="Border / Chrome" Style="{StaticResource LabHeading}"/>
+                                <Border Background="{StaticResource LabSoft}" Padding="20" CornerRadius="12" Margin="0,10,0,24"><StackPanel><TextBlock Text="BORDER" FontSize="10" Foreground="{StaticResource LabPurple}" Margin="0,0,0,14"/><Border Background="White" CornerRadius="8" Padding="20,30"><StackPanel><TextBlock Text="ContentPresenter" Style="{StaticResource LabMutedText}"/><TextBlock Text="Hello, Template" Foreground="{StaticResource LabPurple}" FontSize="18" Margin="0,8,0,0"/></StackPanel></Border></StackPanel></Border>
+                                <TextBlock Text="Background ← Button.Background" Style="{StaticResource LabText}" Foreground="{StaticResource LabPurple}" FontSize="12"/>
+                                <TextBlock Text="Padding 通过 ContentPresenter.Margin 呈现。ContentPresenter 决定内容放在哪里。" Style="{StaticResource LabMutedText}" Margin="0,14,0,20"/>
+                                <Button Content="回到 XAML 对照 →" Style="{StaticResource LabSecondary}" Command="{Binding NavigateCommand}" CommandParameter="lab"/>
+                            </StackPanel></Border>
+                            <Border Grid.Column="4" Style="{StaticResource LabCard}" Background="{StaticResource LabDark}"><StackPanel>
+                                <TextBlock Text="从模板外部定位元素" Style="{StaticResource LabHeading}" Foreground="{StaticResource LabCode}"/>
+                                <TextBlock Style="{StaticResource LabCodeText}" TextWrapping="Wrap" Text="button.ApplyTemplate();&#10;var chrome = button.Template&#10;  .FindName(&quot;Chrome&quot;, button)&#10;  as Border;&#10;&#10;// 自定义控件内部：&#10;// OnApplyTemplate() 中调用&#10;GetTemplateChild(&quot;PART_Track&quot;);"/>
+                                <TextBlock Text="模板契约" Foreground="#B49CF5" Margin="0,24,0,10"/>
+                                <TextBlock Text="保留文档要求的 PART_* 部件。重新应用模板时，解绑旧部件事件，再绑定新部件。" Style="{StaticResource LabText}" Foreground="{StaticResource LabCode}" FontSize="12"/>
+                            </StackPanel></Border>
+                        </Grid>
+                        <UniformGrid Columns="3" Margin="0,24,-20,0">
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="ControlTemplate" Foreground="{StaticResource LabPurple}" FontSize="16" Margin="0,0,0,10"/><TextBlock Text="定义控件的视觉结构。&#10;应用于 Control.Template。" Style="{StaticResource LabMutedText}"/></StackPanel></Border>
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="DataTemplate" Foreground="{StaticResource LabPurple}" FontSize="16" Margin="0,0,0,10"/><TextBlock Text="定义数据的呈现方式。&#10;应用于 ItemTemplate / ContentTemplate。" Style="{StaticResource LabMutedText}"/></StackPanel></Border>
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="ItemsPanelTemplate" Foreground="{StaticResource LabPurple}" FontSize="16" Margin="0,0,0,10"/><TextBlock Text="定义集合项的布局容器。&#10;通过 ItemsPanel 指定。" Style="{StaticResource LabMutedText}"/></StackPanel></Border>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <!-- States and motion. Both locked examples and real pointer states work. -->
+                    <StackPanel Visibility="{Binding IsStates, Converter={StaticResource BoolVisibility}}">
+                        <Border Style="{StaticResource LabCard}" Margin="0,0,0,24"><StackPanel>
+                            <TextBlock Text="锁定示例状态" Style="{StaticResource LabMutedText}" Margin="0,0,0,12"/>
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton Content="Normal" GroupName="States" Style="{StaticResource LabChoice}" Width="150" IsChecked="{Binding IsNormal, Mode=OneWay}" Command="{Binding StateCommand}" CommandParameter="Normal"/>
+                                <RadioButton Content="MouseOver" GroupName="States" Style="{StaticResource LabChoice}" Width="150" IsChecked="{Binding IsMouseOverState, Mode=OneWay}" Command="{Binding StateCommand}" CommandParameter="MouseOver"/>
+                                <RadioButton Content="Pressed" GroupName="States" Style="{StaticResource LabChoice}" Width="150" IsChecked="{Binding IsPressedState, Mode=OneWay}" Command="{Binding StateCommand}" CommandParameter="Pressed"/>
+                                <RadioButton Content="Disabled" GroupName="States" Style="{StaticResource LabChoice}" Width="150" IsChecked="{Binding IsDisabledState, Mode=OneWay}" Command="{Binding StateCommand}" CommandParameter="Disabled"/>
+                            </StackPanel>
+                        </StackPanel></Border>
+                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="1.08*"/></Grid.ColumnDefinitions>
+                            <Border Style="{StaticResource LabCard}" MinHeight="390"><StackPanel>
+                                <Grid Margin="0,0,0,18"><TextBlock Text="按钮状态预览" Style="{StaticResource LabHeading}"/><Border HorizontalAlignment="Right" Background="{StaticResource LabSoft}" Padding="24,6" CornerRadius="8"><TextBlock Text="{Binding SelectedState}" Foreground="{StaticResource LabPurple}" FontSize="12"/></Border></Grid>
+                                <Border Background="{StaticResource LabPage}" CornerRadius="12" Height="176"><Button Content="Hello, Template" Style="{StaticResource LabDemo}" Background="{Binding StateBackground}" IsEnabled="{Binding StateEnabled}" Command="{Binding PreviewCommand}" AutomationProperties.AutomationId="StatePreviewButton"/></Border>
+                                <TextBlock Text="{Binding StateDescription}" Style="{StaticResource LabText}" FontSize="12" Margin="0,18,0,14"/>
+                                <TextBlock Text="{Binding StateProperty}" FontFamily="Consolas" Foreground="{StaticResource LabPurple}"/>
+                                <TextBlock Text="默认预览支持悬停与按下；上方标签可固定查看各状态。" Style="{StaticResource LabMutedText}" FontSize="11" Margin="0,18,0,0"/>
+                            </StackPanel></Border>
+                            <Border Grid.Column="2" Style="{StaticResource LabCard}" Background="{StaticResource LabDark}"><StackPanel>
+                                <Grid Margin="0,0,0,24"><TextBlock Text="ControlTemplate.Triggers" Style="{StaticResource LabCodeText}"/><Button Content="复制" Click="CopyCode_Click" Style="{StaticResource LabLink}" Foreground="#B49CF5" HorizontalAlignment="Right" Padding="0"/></Grid>
+                                <TextBlock Text="{Binding StateCode}" Style="{StaticResource LabCodeText}" TextWrapping="Wrap"/>
+                                <TextBlock Text="同一属性同时满足多个 Trigger 时，注意声明顺序与依赖属性优先级。" Style="{StaticResource LabText}" Foreground="{StaticResource LabCode}" FontSize="12" Margin="0,28,0,0"/>
+                            </StackPanel></Border>
+                        </Grid>
+                        <UniformGrid Columns="3" Margin="0,24,-20,16">
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="01 / 状态分组" Style="{StaticResource LabMutedText}"/><TextBlock Text="CommonStates" FontSize="17" Foreground="{StaticResource LabPurple}" Margin="0,12"/><TextBlock Text="Normal · MouseOver · Pressed · Disabled&#10;同组同时只有一个活动状态；焦点另设 FocusStates。" Style="{StaticResource LabText}" FontSize="12"/></StackPanel></Border>
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="02 / 过渡动画" Style="{StaticResource LabMutedText}"/><TextBlock Text="VisualTransition" FontSize="17" Foreground="{StaticResource LabPurple}" Margin="0,12"/><TextBlock Text="从一个状态平滑过渡到另一个状态。时长、缓动与属性动画共同决定反馈。当前按钮用 Storyboard 演示透明度过渡。" Style="{StaticResource LabText}" FontSize="12"/></StackPanel></Border>
+                            <Border Style="{StaticResource LabCard}" Margin="0,0,20,0"><StackPanel><TextBlock Text="03 / 模板契约" Style="{StaticResource LabMutedText}"/><TextBlock Text="VisualStateManager" FontSize="17" Foreground="{StaticResource LabPurple}" Margin="0,12"/><TextBlock Text="在模板根元素声明 VisualStateGroups。标准控件会按约定的状态名称驱动切换。" Style="{StaticResource LabText}" FontSize="12"/></StackPanel></Border>
+                        </UniformGrid>
+                        <Button Content="准备好了？进入状态按钮挑战 →" Style="{StaticResource LabLink}" HorizontalAlignment="Left" Command="{Binding NavigateCommand}" CommandParameter="challenge"/>
+                    </StackPanel>
+
+                    <!-- Practice. Each answer produces specific, retryable feedback. -->
+                    <Grid Visibility="{Binding IsChallenge, Converter={StaticResource BoolVisibility}}">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="20"/><ColumnDefinition Width="1.9*"/></Grid.ColumnDefinitions>
+                        <Border Style="{StaticResource LabCard}" MinHeight="626"><StackPanel>
+                            <Border Background="{StaticResource LabSoft}" CornerRadius="8" Padding="16,6" HorizontalAlignment="Left"><TextBlock Text="基础挑战 · 约 5 分钟" Foreground="{StaticResource LabPurple}" FontSize="12"/></Border>
+                            <TextBlock Text="一行代码，连接内外" FontSize="22" Margin="0,24,0,22"/>
+                            <TextBlock Text="目标：Button 设置紫色背景后，模板内部的 Border 应显示同样的颜色。" Style="{StaticResource LabText}"/>
+                            <Border Background="{StaticResource LabPage}" CornerRadius="12" Height="128" Margin="0,20"><Button Content="开始学习" Style="{StaticResource LabDemo}" Command="{Binding PreviewCommand}"/></Border>
+                            <TextBlock Text="完成条件" Style="{StaticResource LabText}" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                            <TextBlock Text="01  保留 ContentPresenter&#10;&#10;02  背景由 Button.Background 提供&#10;&#10;03  模板可以复用于多个 Button" Style="{StaticResource LabMutedText}"/>
+                            <Border Height="1" Background="{StaticResource LabLine}" Margin="0,20"/>
+                            <TextBlock Text="遇到困难？回到实验室，观察属性如何穿过模板。" Style="{StaticResource LabMutedText}" Margin="0,0,0,16"/>
+                            <Button Content="打开模板实验室 ↗" Style="{StaticResource LabSecondary}" Command="{Binding NavigateCommand}" CommandParameter="lab"/>
+                        </StackPanel></Border>
+                        <Border Grid.Column="2" Style="{StaticResource LabCard}" Background="{StaticResource LabDark}"><StackPanel>
+                            <TextBlock Text="选择正确的 Background 写法" Style="{StaticResource LabHeading}" Foreground="{StaticResource LabCode}"/>
+                            <TextBlock Text="{Binding ChallengeCode}" Style="{StaticResource LabCodeText}" Margin="0,14,0,30"/>
+                            <StackPanel Visibility="{Binding QuizPending, Converter={StaticResource BoolVisibility}}">
+                                <TextBlock Text="选择后立即查看讲解。" Foreground="{StaticResource LabCode}" FontSize="12" Margin="0,0,0,20"/>
+                                <Button Style="{StaticResource LabAction}" Background="White" Foreground="{StaticResource LabInk}" HorizontalContentAlignment="Left" Padding="18" Margin="0,0,0,16" Command="{Binding AnswerCommand}" CommandParameter="A"><TextBlock FontFamily="Consolas" Text="A   {Binding Background}"/></Button>
+                                <Button Style="{StaticResource LabAction}" Background="White" Foreground="{StaticResource LabInk}" HorizontalContentAlignment="Left" Padding="18" Margin="0,0,0,16" Command="{Binding AnswerCommand}" CommandParameter="B"><TextBlock FontFamily="Consolas" Text="B   {TemplateBinding Background}"/></Button>
+                                <Button Style="{StaticResource LabAction}" Background="White" Foreground="{StaticResource LabInk}" HorizontalContentAlignment="Left" Padding="18" Margin="0,0,0,16" Command="{Binding AnswerCommand}" CommandParameter="C"><TextBlock FontFamily="Consolas" Text="C   Purple"/></Button>
+                                <TextBlock Text="提示：默认 Binding 的来源，和模板所属的控件不是同一个概念。" Style="{StaticResource LabMutedText}" Foreground="#A39BB8"/>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding QuizChecked, Converter={StaticResource BoolVisibility}}">
+                                <Border Background="{Binding QuizResultBackground}" CornerRadius="12" Padding="24"><StackPanel><TextBlock Text="{Binding QuizTitle}" Style="{StaticResource LabHeading}"/><TextBlock Text="{Binding QuizExplanation}" Style="{StaticResource LabText}"/></StackPanel></Border>
+                                <StackPanel Orientation="Horizontal" Margin="0,24,0,0"><Button Content="再做一次" Style="{StaticResource LabSecondary}" Command="{Binding RetryCommand}" Margin="0,0,12,0"/><Button Content="继续：状态与动画 →" Style="{StaticResource LabAction}" Command="{Binding NavigateCommand}" CommandParameter="states"/></StackPanel>
+                            </StackPanel>
+                        </StackPanel></Border>
+                    </Grid>
+
+                    <!-- Reading detail is backed by each course card, rather than dead navigation. -->
+                    <StackPanel Visibility="{Binding IsLesson, Converter={StaticResource BoolVisibility}}">
+                        <Border Style="{StaticResource LabCard}"><StackPanel>
+                            <TextBlock Text="本课知识点" Style="{StaticResource LabHeading}"/>
+                            <TextBlock Text="{Binding SelectedLesson.Topics}" Foreground="{StaticResource LabPurple}" FontSize="18" Margin="0,0,0,14"/>
+                            <TextBlock Text="{Binding SelectedLesson.MoreTopics}" Style="{StaticResource LabMutedText}"/>
+                            <Border Height="1" Background="{StaticResource LabLine}" Margin="0,24"/>
+                            <TextBlock Text="概念与使用方式" Style="{StaticResource LabHeading}"/>
+                            <TextBlock Text="{Binding SelectedLesson.Explanation}" Style="{StaticResource LabText}" FontSize="16" LineHeight="32"/>
+                            <Border Background="{StaticResource LabSoft}" Padding="20" CornerRadius="12" Margin="0,24"><TextBlock Text="动手建议：先预测外观会怎样变化，再进入对应实验，最后对照 XAML 验证自己的理解。" Style="{StaticResource LabText}"/></Border>
+                            <StackPanel Orientation="Horizontal"><Button Content="已读，进入对应实验 →" Style="{StaticResource LabAction}" Command="{Binding CompleteLessonCommand}" Margin="0,0,16,0"/><Button Content="← 返回学习路线" Style="{StaticResource LabSecondary}" Command="{Binding NavigateCommand}" CommandParameter="roadmap"/></StackPanel>
+                        </StackPanel></Border>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Status}" Style="{StaticResource LabMutedText}" Margin="0,24,0,0" AutomationProperties.LiveSetting="Polite"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

@@ -74,6 +74,24 @@
       <DependentUpon>shapFrm.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LogicViewModel.cs" />
+    <Compile Include="ViewModel\TemplateLabViewModel.cs" />
+    <Compile Include="Views\TemplateLabWindow.xaml.cs">
+      <DependentUpon>TemplateLabWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\TemplateLabWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resource\TemplateLabStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="Views\controlTempateFrm2.xaml.cs">
+      <DependentUpon>controlTempateFrm2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\controlTemplateFrm.xaml.cs">
+      <DependentUpon>controlTemplateFrm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\effectFrm.xaml.cs">
       <DependentUpon>effectFrm.xaml</DependentUpon>
     </Compile>
@@ -86,6 +104,9 @@
     </Compile>
     <Compile Include="Views\PalyFrm.xaml.cs">
       <DependentUpon>PalyFrm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RenderAndRotateFrm.xaml.cs">
+      <DependentUpon>RenderAndRotateFrm.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,7 +128,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resource\PlayFrmDic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="shapFrm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\controlTempateFrm2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\controlTemplateFrm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,6 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PalyFrm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RenderAndRotateFrm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

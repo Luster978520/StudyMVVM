@@ -1,0 +1,182 @@
+﻿<Window x:Class="StudyMVVM.Views.controlTemplateFrm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyMVVM.Views"
+        mc:Ignorable="d"
+        Title="controlTemplateFrm" Height="450" Width="800">
+    <Window.Resources>
+
+        <ControlTemplate x:Key="MyButtonTemplate"
+                     TargetType="{x:Type Button}">
+
+            <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="10">
+
+                <ContentPresenter
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+
+            </Border>
+
+        </ControlTemplate>
+        <ControlTemplate x:Key="MyButtonTempalte2" TargetType="{x:Type Button}">
+            <Border x:Name="myborder"
+                CornerRadius="22">
+                <ContentPresenter HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                    
+               
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="myborder"
+            Property="Background"
+            Value="Red"/>
+                </Trigger>
+
+
+            </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel>
+
+            <Button Content="登录"
+                Width="120"
+                Height="40"
+                Background="LightBlue"
+                BorderBrush="Blue"
+                BorderThickness="2"
+                Template="{StaticResource MyButtonTemplate}"/>
+
+            <Button Content="注册"
+                Width="120"
+                Height="40"
+                Margin="0,10,0,0"
+                Background="LightGreen"
+                BorderBrush="Green"
+                BorderThickness="2"
+                Template="{StaticResource MyButtonTemplate}"/>
+
+
+            <Button Content="登录"
+        Width="120"
+        Height="40">
+
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Border x:Name="border"
+                    Background="LightBlue"
+                    CornerRadius="10">
+
+                            <ContentPresenter
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- 鼠标悬停 -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                Property="Background"
+                Value="Orange"/>
+                            </Trigger>
+
+                            <!-- 鼠标按下 -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border"
+                Property="Background"
+                Value="Red"/>
+                            </Trigger>
+
+                            <!-- 禁用状态 -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border"
+                Property="Background"
+                Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Button.Template>
+
+            </Button>
+
+
+
+            <Button Content="登录" Margin="0 10 0 0"
+        Width="120"
+        Height="40">
+
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Border x:Name="border"
+                    CornerRadius="10">
+
+                            <Border.Background>
+                                <SolidColorBrush Color="LightBlue"/>
+                            </Border.Background>
+
+                            <ContentPresenter
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- 鼠标进入 -->
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                Storyboard.TargetName="border"
+                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                To="Orange"
+                                Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+
+                            <!-- 鼠标离开 -->
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                Storyboard.TargetName="border"
+                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                To="LightBlue"
+                                Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Button.Template>
+
+            </Button>
+
+            <Button x:Name="btn">
+                <Button.Template>
+                    <ControlTemplate>
+                         
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,88 @@
+﻿<Window x:Class="StudyMVVM.Views.controlTempateFrm2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudyMVVM.Views"
+        mc:Ignorable="d"
+        Title="controlTempateFrm2" Height="450" Width="800">
+    <Window.Resources>
+
+        <!-- 1. 定义 Button 控件模板 -->
+        <ControlTemplate x:Key="MyButtonTemplate"
+                     TargetType="{x:Type Button}">
+
+            <!-- 按钮的外观 -->
+            <Border x:Name="btnBorder"
+                CornerRadius="10"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+
+                <!-- 显示 Button 的 Content -->
+                <ContentPresenter
+                Content="{TemplateBinding Content}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+
+            </Border>
+
+            <!-- 2. 定义模板触发器 -->
+            <ControlTemplate.Triggers>
+
+                <!-- 鼠标悬停 -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="btnBorder"
+                        Property="Background"
+                        Value="Orange"/>
+                </Trigger>
+
+                <!-- 鼠标按下 -->
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="btnBorder"
+                        Property="Background"
+                        Value="Red"/>
+                </Trigger>
+
+                <!-- 按钮禁用 -->
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="btnBorder"
+                        Property="Background"
+                        Value="Gray"/>
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+
+    </Window.Resources>
+
+    <!-- 3. UI 界面 -->
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <Button Content="登录"
+                Width="150"
+                Height="45"
+                Background="LightBlue"
+                Template="{StaticResource MyButtonTemplate}"/>
+
+            <Button Content="注册"
+                Width="150"
+                Height="45"
+                Margin="0,15,0,0"
+                Background="LightGreen"
+                Template="{StaticResource MyButtonTemplate}"/>
+
+            <Button Content="禁用按钮"
+                Width="150"
+                Height="45"
+                Margin="0,15,0,0"
+                Background="LightGray"
+                IsEnabled="False"
+                Template="{StaticResource MyButtonTemplate}"/>
+
+        </StackPanel>
+    </Grid>
+</Window>

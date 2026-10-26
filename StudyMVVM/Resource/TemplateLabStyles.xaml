@@ -1,0 +1,140 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="LabPage" Color="#F7F7FB"/>
+    <SolidColorBrush x:Key="LabInk" Color="#282637"/>
+    <SolidColorBrush x:Key="LabMuted" Color="#777486"/>
+    <SolidColorBrush x:Key="LabPurple" Color="#7055D5"/>
+    <SolidColorBrush x:Key="LabSoft" Color="#F0ECFC"/>
+    <SolidColorBrush x:Key="LabLine" Color="#E7E5EE"/>
+    <SolidColorBrush x:Key="LabDark" Color="#1D1E30"/>
+    <SolidColorBrush x:Key="LabCode" Color="#DCD9F0"/>
+    <BooleanToVisibilityConverter x:Key="BoolVisibility"/>
+
+    <Style x:Key="LabText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource LabInk}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="LineHeight" Value="23"/>
+    </Style>
+    <Style x:Key="LabMutedText" TargetType="TextBlock" BasedOn="{StaticResource LabText}">
+        <Setter Property="Foreground" Value="{StaticResource LabMuted}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+    <Style x:Key="LabHeading" TargetType="TextBlock" BasedOn="{StaticResource LabText}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+    </Style>
+    <Style x:Key="LabCard" TargetType="Border">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="24"/>
+    </Style>
+    <Style x:Key="LabAction" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource LabPurple}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="18,11"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Chrome" Background="{TemplateBinding Background}" CornerRadius="8"
+                            BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.82"/></Trigger>
+                        <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.65"/></Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderThickness" Value="2"/><Setter TargetName="Chrome" Property="BorderBrush" Value="#AB98EC"/></Trigger>
+                        <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value="0.4"/></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LabSecondary" TargetType="Button" BasedOn="{StaticResource LabAction}">
+        <Setter Property="Background" Value="{StaticResource LabSoft}"/>
+        <Setter Property="Foreground" Value="{StaticResource LabPurple}"/>
+    </Style>
+    <Style x:Key="LabLink" TargetType="Button" BasedOn="{StaticResource LabSecondary}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="0,8"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+    <Style x:Key="LabNav" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource LabInk}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="15,14"/>
+        <Setter Property="Margin" Value="0,3"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Chrome" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="{StaticResource LabPage}"/></Trigger>
+                        <Trigger Property="IsChecked" Value="True"><Setter TargetName="Chrome" Property="Background" Value="{StaticResource LabSoft}"/><Setter Property="Foreground" Value="{StaticResource LabPurple}"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource LabPurple}"/><Setter TargetName="Chrome" Property="BorderThickness" Value="1"/></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="LabChoice" TargetType="RadioButton" BasedOn="{StaticResource LabNav}">
+        <Setter Property="Padding" Value="18,10"/>
+        <Setter Property="Background" Value="{StaticResource LabPage}"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="LabCodeText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource LabCode}"/>
+        <Setter Property="LineHeight" Value="24"/>
+    </Style>
+    <ControlTemplate x:Key="LabDemoTemplate" TargetType="Button">
+        <Border x:Name="Chrome" Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+            <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#5940B8"/></Trigger>
+            <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#422D96"/></Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="#AA95EC"/><Setter TargetName="Chrome" Property="BorderThickness" Value="2"/></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Background" Value="#CDC8DF"/></Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions><Condition Binding="{Binding IsStates}" Value="True"/><Condition Binding="{Binding SelectedState}" Value="MouseOver"/></MultiDataTrigger.Conditions>
+                <Setter TargetName="Chrome" Property="Background" Value="#5940B8"/>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions><Condition Binding="{Binding IsStates}" Value="True"/><Condition Binding="{Binding SelectedState}" Value="Pressed"/></MultiDataTrigger.Conditions>
+                <Setter TargetName="Chrome" Property="Background" Value="#422D96"/>
+            </MultiDataTrigger>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="Chrome" Storyboard.TargetProperty="Opacity" To="0.88" Duration="0:0:0.16"/></Storyboard></BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="Chrome" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.16"/></Storyboard></BeginStoryboard>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="LabDemo" TargetType="Button" BasedOn="{StaticResource LabAction}">
+        <Setter Property="Template" Value="{StaticResource LabDemoTemplate}"/>
+        <Setter Property="Width" Value="194"/>
+        <Setter Property="Height" Value="52"/>
+        <Setter Property="Tag" Value="{Binding PreviewRadius}"/>
+        <Setter Property="Background" Value="{Binding PreviewBackground}"/>
+    </Style>
+</ResourceDictionary>
